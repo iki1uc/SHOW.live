@@ -1,0 +1,20 @@
+<script type="module">
+import { ghostCheck } from "./core/ghost.js";
+import { wraightLoop } from "./core/wraight.js";
+import { helpAuto } from "./core/help.js";
+import { errorTri } from "./core/error.js";
+
+const frame = {
+  context: null,
+  repeat: 4,
+  fixable: false,
+  addr: "0x13",
+  event: "on3",
+  state: "ACTIVE"
+};
+
+console.log("GHOST:", ghostCheck(frame));
+console.log("WRAIGHT:", wraightLoop(frame));
+console.log("HELP:", helpAuto(frame));
+console.log("ERROR:", errorTri(frame));
+</script>

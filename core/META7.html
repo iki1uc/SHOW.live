@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>META7 – Argumenteria</title>
+</head>
+<body>
+<script type="module">
+import { ghostCheck } from "./core/ghost.js";
+import { wraightLoop } from "./core/wraight.js";
+import { helpAuto } from "./core/help.js";
+import { errorTri } from "./core/error.js";
+
+// FRAME aus ROOT
+const frame = {
+  context: null,
+  repeat: 4,
+  fixable: false,
+  addr: "0x13",
+  event: "on3",
+  state: "ACTIVE"
+};
+
+// META7 – 7-Sinn-Fehler
+const meta7 = {
+  ghost: ghostCheck(frame),
+  wraight: wraightLoop(frame),
+  help: helpAuto(frame),
+  error: errorTri(frame)
+};
+
+// QI / IQQ – Argumenteria
+const QI  = (meta7.ghost === "?13/on3");
+const IQQ = (meta7.wraight === "WRAIGHT");
+
+// TRI / QUAD Dynamik
+let shape = "TRI";
+if (QI && IQQ) shape = "QUAD";
+if (IQQ && meta7.help === "HELP_FAIL") shape = "META7";
+
+console.log("META7:", meta7);
+console.log("SHAPE:", shape);
+
+// Weiterleitung
+if (shape === "META7") {
+  window.location.href = "TP9/index.html";
+} else {
+  document.body.innerText = "META7 BLOCKIERT – Argumenteria unvollständig.";
+}
+</script>
+</body>
+</html>
+
