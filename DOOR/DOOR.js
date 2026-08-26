@@ -1,172 +1,95 @@
-// DOOR.js
-// Übergangsmodul – Durchgang mit TRANS, WARB, KANAL
+// DOOR.js – Übergangsmodul
+// DOOR → TRANS → WARB → KANAL → API
 
 export const DOOR = {
-    // Status
-    open: false,
-    transition: false,
-    warb: false,
-    kanal: false,
-    api: false,
-    
+
+    // Statusflags
+    state: {
+        door: false,
+        trans: false,
+        warb: false,
+        kanal: false,
+        api: false
+    },
+
     // Zähler
     count: { door: 0, trans: 0, warb: 0, kanal: 0, api: 0 },
 
-    // ========================================
-    // DOOR – Tür öffnen/schließen
-    // ========================================
+    // Sicherheitscheck
+    safe() {
+        return typeof window.DOO !== "undefined";
+    },
+
+    // DOOR öffnen
     openDoor() {
-        this.open = true;
+        if (!this.safe()) return { status: "error", message: "❌ DOO nicht geladen – DOOR blockiert" };
+
+        this.state.door = true;
         this.count.door++;
-        return { status: 'ok', message: '🚪 DOOR geöffnet', count: this.count.door };
+        return { status: "ok", message: "🚪 DOOR geöffnet", count: this.count.door };
     },
 
+    // DOOR schließen
     closeDoor() {
-        this.open = false;
-        this.transition = false;
-        this.warb = false;
-        this.kanal = false;
-        return { status: 'ok', message: '🚪 DOOR geschlossen' };
+        this.state = { door: false, trans: false, warb: false, kanal: false, api: false };
+        return { status: "ok", message: "🚪 DOOR geschlossen" };
     },
 
-    isOpen() {
-        return this.open;
-    },
-
-    // ========================================
-    // TRANS – Transition (Durchgang)
-    // ========================================
+    // TRANS
     trans() {
-        if (!this.open) {
-            return { status: 'error', message: '❌ DOOR nicht geöffnet – TRANS blockiert' };
-        }
-        this.transition = true;
+        if (!this.state.door) return { status: "error", message: "❌ DOOR nicht geöffnet – TRANS blockiert" };
+
+        this.state.trans = true;
         this.count.trans++;
-        return { 
-            status: 'ok', 
-            message: '🌀 TRANSITION aktiviert – Durchgang bereit', 
-            count: this.count.trans 
-        };
+        return { status: "ok", message: "🌀 TRANS aktiviert", count: this.count.trans };
     },
 
-    // ========================================
-    // WARB – Warp (Beschleunigung)
-    // ========================================
+    // WARB
     warb() {
-        if (!this.open) {
-            return { status: 'error', message: '❌ DOOR nicht geöffnet – WARB blockiert' };
-        }
-        if (!this.transition) {
-            return { status: 'error', message: '❌ TRANS nicht aktiv – WARB benötigt TRANS' };
-        }
-        this.warb = true;
+        if (!this.state.trans) return { status: "error", message: "❌ TRANS nicht aktiv – WARB blockiert" };
+
+        this.state.warb = true;
         this.count.warb++;
-        return { 
-            status: 'ok', 
-            message: '⚡ WARB aktiviert – Beschleunigung läuft', 
-            count: this.count.warb 
-        };
+        return { status: "ok", message: "⚡ WARB aktiviert", count: this.count.warb };
     },
 
-    // ========================================
-    // KANAL – Kanal (Verbindung)
-    // ========================================
+    // KANAL
     kanal() {
-        if (!this.open) {
-            return { status: 'error', message: '❌ DOOR nicht geöffnet – KANAL blockiert' };
-        }
-        if (!this.transition) {
-            return { status: 'error', message: '❌ TRANS nicht aktiv – KANAL benötigt TRANS' };
-        }
-        this.kanal = true;
+        if (!this.state.trans) return { status: "error", message: "❌ TRANS nicht aktiv – KANAL blockiert" };
+
+        this.state.kanal = true;
         this.count.kanal++;
-        return { 
-            status: 'ok', 
-            message: '🔗 KANAL verbunden – Datenfluss aktiv', 
-            count: this.count.kanal 
-        };
+        return { status: "ok", message: "🔗 KANAL verbunden", count: this.count.kanal };
     },
 
-    // ========================================
-    // API – Durchlass
-    // ========================================
+    // API
     api() {
-        if (!this.open) {
-            return { status: 'error', message: '❌ DOOR nicht geöffnet – API blockiert' };
-        }
-        this.api = true;
+        if (!this.state.door) return { status: "error", message: "❌ DOOR nicht geöffnet – API blockiert" };
+
+        this.state.api = true;
         this.count.api++;
-        return { 
-            status: 'ok', 
-            message: '🔌 API durchgelassen – Verbindung aktiv', 
-            count: this.count.api 
-        };
+        return { status: "ok", message: "🔌 API durchgelassen", count: this.count.api };
     },
 
-    // ========================================
-    // Full Pipeline: DOOR → TRANS → WARB → KANAL → API
-    // ========================================
+    // Full Pipeline
     fullPipeline() {
         const steps = [];
-        
-        // 1. DOOR öffnen
-        const door = this.openDoor();
-        steps.push(door);
-        
-        // 2. TRANS
-        const trans = this.trans();
-        steps.push(trans);
-        if (trans.status === 'error') return { steps, error: 'TRANS fehlgeschlagen' };
-        
-        // 3. WARB
-        const warb = this.warb();
-        steps.push(warb);
-        if (warb.status === 'error') return { steps, error: 'WARB fehlgeschlagen' };
-        
-        // 4. KANAL
-        const kanal = this.kanal();
-        steps.push(kanal);
-        if (kanal.status === 'error') return { steps, error: 'KANAL fehlgeschlagen' };
-        
-        // 5. API
-        const api = this.api();
-        steps.push(api);
-        
+
+        steps.push(this.openDoor());
+        steps.push(this.trans());
+        steps.push(this.warb());
+        steps.push(this.kanal());
+        steps.push(this.api());
+
         return {
-            status: 'ok',
-            message: '✅ FULL PIPELINE COMPLETE – DOOR → TRANS → WARB → KANAL → API',
-            steps: steps,
-            state: this.getStatus()
+            status: "ok",
+            message: "✅ FULL PIPELINE COMPLETE",
+            steps,
+            state: this.state
         };
     },
 
-    // ========================================
     // Reset
-    // ========================================
     reset() {
-        this.open = false;
-        this.transition = false;
-        this.warb = false;
-        this.kanal = false;
-        this.api = false;
-        this.count = { door: 0, trans: 0, warb: 0, kanal: 0, api: 0 };
-        return { status: 'ok', message: '⟲ DOOR zurückgesetzt' };
-    },
-
-    // ========================================
-    // Status
-    // ========================================
-    getStatus() {
-        return {
-            open: this.open,
-            transition: this.transition,
-            warb: this.warb,
-            kanal: this.kanal,
-            api: this.api,
-            count: this.count,
-            phase: this.open ? (this.api ? 'API' : this.kanal ? 'KANAL' : this.warb ? 'WARB' : this.transition ? 'TRANS' : 'DOOR') : 'CLOSED'
-        };
-    }
-};
-
-export default DOOR;
+        this.state = { door: false, trans: false, warb: false, kanal: false, api: false };
+        this.count = { door: 0, trans: 0, war
