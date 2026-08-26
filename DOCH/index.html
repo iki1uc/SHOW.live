@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>MIR DOCH – Pulse</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .core {
+      text-align: center;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    .mir {
+      font-size: 48px;
+      color: #0f0;
+      animation: mirPulse 1.4s infinite ease-in-out;
+    }
+
+    .doch {
+      font-size: 32px;
+      color: #f33;
+      margin-top: 10px;
+      animation: dochGlow 2.2s infinite ease-in-out;
+    }
+
+    @keyframes mirPulse {
+      0%   { opacity: 0.4; transform: scale(0.95); }
+      50%  { opacity: 1;   transform: scale(1.10); }
+      100% { opacity: 0.4; transform: scale(0.95); }
+    }
+
+    @keyframes dochGlow {
+      0%   { text-shadow: 0 0 4px #f33; }
+      50%  { text-shadow: 0 0 18px #f33; }
+      100% { text-shadow: 0 0 4px #f33; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="core">
+    <div class="mir">MIR</div>
+    <div class="doch">DOCH</div>
+  </div>
+</body>
+</html>
