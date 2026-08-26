@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOOR · Übergangsmodul</title>
+<style>
+    body { background:#0a0a0f; color:#0f0; font-family:Consolas; padding:20px; }
+    h1 { color:#ff6b6b; }
+    button { background:#111; color:#0ff; border:1px solid #333; padding:8px 16px; margin:4px; cursor:pointer; }
+    button:hover { background:#1a1a2a; border-color:#ff6b6b; }
+    pre { background:#111; padding:15px; border-left:3px solid #ff6b6b; }
+    .status { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; margin:10px 0; }
+    .box { background:#111; padding:10px; border:1px solid #333; text-align:center; }
+    .box .val { font-size:20px; font-weight:bold; }
+    .box.green .val { color:#4f4; }
+    .box.red .val { color:#f44; }
+</style>
+</head>
+<body>
+
+<h1>🚪 DOOR · Übergangsmodul</h1>
+
+<div class="status">
+    <div class="box" style="border-color:#ff6b6b;"><div>DOOR</div><div class="val" id="door-status" style="color:#ff6b6b;">⛔</div></div>
+    <div class="box" style="border-color:#6bff6b;"><div>TRANS</div><div class="val" id="trans-status" style="color:#6bff6b;">⛔</div></div>
+    <div class="box" style="border-color:#6b6bff;"><div>WARB</div><div class="val" id="warb-status" style="color:#6b6bff;">⛔</div></div>
+    <div class="box" style="border-color:#ffd93d;"><div>KANAL</div><div class="val" id="kanal-status" style="color:#ffd93d;">⛔</div></div>
+</div>
+
+<div>
+    <button onclick="doorOpen()">🚪 DOOR öffnen</button>
+    <button onclick="doorClose()">🚪 DOOR schließen</button>
+    <button onclick="transActivate()">🌀 TRANS</button>
+    <button onclick="warbActivate()">⚡ WARB</button>
+    <button onclick="kanalActivate()">🔗 KANAL</button>
+    <button onclick="resetAll()">⟲ RESET</button>
+</div>
+
+<pre id="log">System bereit…</pre>
+
+<script type="module">
+import DOOR from './DOOR.js';
+
+window.door = DOOR;
+
+function log(msg) {
+    document.getElementById('log').textContent = JSON.stringify(msg, null, 2);
+}
+
+window.doorOpen = function() {
+    const result = DOOR.openDoor();
+    document.getElementById('door-status').textContent = '✅';
+    document.getElementById('door-status').style.color = '#4f4';
+    log(result);
+};
+
+window.doorClose = function() {
+    const result = DOOR.closeDoor();
+    document.getElementById('door-status').textContent = '⛔';
+    document.getElementById('door-status').style.color = '#f44';
+    document.getElementById('trans-status').textContent = '⛔';
+    document.getElementById('trans-status').style.color = '#f44';
+    document.getElementById('warb-status').textContent = '⛔';
+    document.getElementById('warb-status').style.color = '#f44';
+    document.getElementById('kanal-status').textContent = '⛔';
+    document.getElementById('kanal-status').style.color = '#f44';
+    log(result);
+};
+
+window.transActivate = function() {
+    const result = DOOR.trans();
+    document.getElementById('trans-status').textContent = '✅';
+    document.getElementById('trans-status').style.color = '#4f4';
+    log(result);
+};
+
+window.warbActivate = function() {
+    const result = DOOR.warb();
+    document.getElementById('warb-status').textContent = '✅';
+    document.getElementById('warb-status').style.color = '#4f4';
+    log(result);
+};
+
+window.kanalActivate = function() {
+    const result = DOOR.kanal();
+    document.getElementById('kanal-status').textContent = '✅';
+    document.getElementById('kanal-status').style.color = '#4f4';
+    log(result);
+};
+
+window.resetAll = function() {
+    const result = DOOR.reset();
+    document.getElementById('door-status').textContent = '⛔';
+    document.getElementById('door-status').style.color = '#f44';
+    document.getElementById('trans-status').textContent = '⛔';
+    document.getElementById('trans-status').style.color = '#f44';
+    document.getElementById('warb-status').textContent = '⛔';
+    document.getElementById('warb-status').style.color = '#f44';
+    document.getElementById('kanal-status').textContent = '⛔';
+    document.getElementById('kanal-status').style.color = '#f44';
+    log(result);
+};
+
+// Initial
+log({ status: 'Bereit', message: 'DOOR geladen. Öffne die Tür!' });
+</script>
+
+</body>
+</html>
