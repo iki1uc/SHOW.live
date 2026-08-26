@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WELCOME · Selbstbestimmt · Farben · Flow</title>
+
+<style>
+  /* ─── GRUNDLAGEN ──────────────────────────────────────── */
+  :root {
+    --bg: #0a0a12;
+    --green: #4f4;
+    --yellow: #ffaa00;
+    --red: #f44;
+    --blue: #4af;
+    --white: #eee;
+    --text: #eee;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ─── HEADER ────────────────────────────────────────────── */
+  header {
+    text-align: center;
+    padding: 30px 0;
+    border-bottom: 3px solid var(--yellow);
+    margin-bottom: 30px;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    color: var(--yellow);
+  }
+  header p {
+    color: #aaa;
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
+
+  /* ─── FARB-STATUS ────────────────────────────────────────── */
+  .status-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  @media (max-width: 700px) {
+    .status-section { grid-template-columns: 1fr 1fr; }
+  }
+
+  .status-card {
+    background: #111;
+    border: 3px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .status-card:hover { transform: scale(1.02); }
+  .status-card .dot {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .status-card .label {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  .status-card .desc {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  .status-card.active-green { border-color: var(--green); background: #0a1a0a; }
+  .status-card.active-yellow { border-color: var(--yellow); background: #1a1a0a; }
+  .status-card.active-red { border-color: var(--red); background: #1a0a0a; }
+  .status-card.active-blue { border-color: var(--blue); background: #0a0a1a; }
+
+  /* ─── HAUPTANZEIGE ────────────────────────────────────────── */
+  .main-display {
+    background: #111;
+    border: 3px solid #2a2a3a;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+    min-height: 150px;
+    transition: 0.5s;
+  }
+  .main-display .big-icon { font-size: 72px; display: block; margin-bottom: 10px; }
+  .main-display .big-text { font-size: 2rem; font-weight: bold; }
+  .main-display .sub-text { font-size: 1.1rem; color: #aaa; margin-top: 8px; }
+
+  .main-display.green { border-color: var(--green); background: #0a1a0a; }
+  .main-display.yellow { border-color: var(--yellow); background: #1a1a0a; }
+  .main-display.red { border-color: var(--red); background: #1a0a0a; }
+  .main-display.blue { border-color: var(--blue); background: #0a0a1a; }
+
+  /* ─── HILFE-BUTTONS ──────────────────────────────────────── */
+  .help-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  @media (max-width: 600px) {
+    .help-grid { grid-template-columns: 1fr; }
+  }
+
+  .help-btn {
+    background: #1a1a2a;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+  }
+  .help-btn:hover { border-color: var(--yellow); transform: scale(1.02); }
+  .help-btn .icon { font-size: 28px; display: block; margin-bottom: 6px; }
+
+  .help-btn.red-btn { border-color: var(--red); }
+  .help-btn.red-btn:hover { background: var(--red); color: #000; }
+
+  /* ─── BETREUER-WECHSEL (ROT) ────────────────────────────── */
+  .wechsel-box {
+    background: #1a0a0a;
+    border: 3px solid var(--red);
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 20px;
+    display: none;
+    text-align: center;
+  }
+  .wechsel-box.show { display: block; }
+  .wechsel-box h3 { color: var(--red); font-size: 1.5rem; margin-bottom: 12px; }
+  .wechsel-box p { color: #aaa; font-size: 1.1rem; }
+  .wechsel-box .confirm-btn {
+    background: var(--red);
+    color: #000;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+  }
+  .wechsel-box .confirm-btn:hover { transform: scale(1.05); }
+
+  /* ─── LOG ────────────────────────────────────────────────── */
+  #log {
+    margin-top: 25px;
+    background: #0a0a1a;
+    border-radius: 12px;
+    padding: 15px;
+    max-height: 120px;
+    overflow-y: auto;
+    border: 2px solid #1a1a2a;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  #log .entry { padding: 4px 0; border-bottom: 1px solid #0a0a12; }
+  #log .time { color: #444; margin-right: 10px; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #444;
+    font-size: 0.8rem;
+    border-top: 2px solid #1a1a2a;
+    margin-top: 30px;
+  }
+  footer span { color: var(--yellow); }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ─── HEADER ────────────────────────────────────────────── -->
+  <header>
+    <h1>🌈 WELCOME</h1>
+    <p>Selbstbestimmt leben · Farben als Wegweiser · Flow erleben</p>
+    <div style="margin-top:10px;font-size:1.2rem;color:#aaa;">
+      <span id="clock">--:--:--</span>
+    </div>
+  </header>
+
+  <!-- ─── FARB-STATUS (Auswahl) ────────────────────────────── -->
+  <div class="status-section" role="radiogroup" aria-label="Dein aktueller Status">
+    <div class="status-card" role="radio" aria-checked="false" tabindex="0" onclick="setStatus('green')" id="card-green">
+      <span class="dot">🟢</span>
+      <span class="label">Grün</span>
+      <span class="desc">Alles gut · Ich bin zufrieden</span>
+    </div>
+    <div class="status-card" role="radio" aria-checked="false" tabindex="0" onclick="setStatus('yellow')" id="card-yellow">
+      <span class="dot">🟡</span>
+      <span class="label">Gelb</span>
+      <span class="desc">Ich bin unsicher · Brauche Orientierung</span>
+    </div>
+    <div class="status-card" role="radio" aria-checked="false" tabindex="0" onclick="setStatus('red')" id="card-red">
+      <span class="dot">🔴</span>
+      <span class="label">Rot</span>
+      <span class="desc">Ich bin überfordert · Betreuer wechseln</span>
+    </div>
+    <div class="status-card" role="radio" aria-checked="false" tabindex="0" onclick="setStatus('blue')" id="card-blue">
+      <span class="dot">🔵</span>
+      <span class="label">Blau</span>
+      <span class="desc">Flow · Ich bin im Einklang</span>
+    </div>
+  </div>
+
+  <!-- ─── HAUPTANZEIGE ───────────────────────────────────────── -->
+  <div class="main-display green" id="mainDisplay">
+    <span class="big-icon" id="displayIcon">🟢</span>
+    <span class="big-text" id="displayTitle">Grün · Alles gut</span>
+    <span class="sub-text" id="displayDesc">Ich bin zufrieden · Alles läuft gut · Nichts tun</span>
+  </div>
+
+  <!-- ─── BETREUER-WECHSEL (nur bei Rot) ────────────────────── -->
+  <div class="wechsel-box" id="wechselBox">
+    <h3>🔴 Betreuer wechseln</h3>
+    <p>Du hast Rot gewählt – das bedeutet: Du willst keinen Diskurs, du willst eine sofortige Veränderung.</p>
+    <p style="color:var(--red);font-weight:bold;margin:10px 0;">Ohne Erklärung. Ohne Rechtfertigung. Einfach wechseln.</p>
+    <button class="confirm-btn" onclick="confirmWechsel()">✅ Betreuerwechsel bestätigen</button>
+    <p style="color:#666;font-size:0.8rem;margin-top:10px;">Dieser Schritt wird protokolliert. Der neue Betreuer wird in Kürze kontaktiert.</p>
+  </div>
+
+  <!-- ─── HILFE-BUTTONS ──────────────────────────────────────── -->
+  <div class="help-grid">
+    <button class="help-btn" onclick="showHelp('orientierung')">
+      <span class="icon">🧭</span>
+      Orientierung · Hilfe finden
+    </button>
+    <button class="help-btn" onclick="showHelp('gesprach')">
+      <span class="icon">💬</span>
+      Gespräch · Austausch
+    </button>
+    <button class="help-btn red-btn" onclick="showHelp('notfall')">
+      <span class="icon">🆘</span>
+      Notfall · Soforthilfe
+    </button>
+  </div>
+
+  <!-- ─── HILFE-AUSGABE ──────────────────────────────────────── -->
+  <div id="helpOutput" style="margin-top:15px;padding:20px;background:#0a0a1a;border-radius:12px;border:2px solid #1a1a2a;min-height:60px;color:#aaa;">
+    Klicke auf ein Thema oder wähle deine Farbe – ich zeige dir den Weg.
+  </div>
+
+  <!-- ─── LOG ────────────────────────────────────────────────── -->
+  <div id="log" role="log" aria-label="Aktivitätenprotokoll">
+    <div class="entry"><span class="time">[WELCOME]</span> 🌈 Selbstbestimmt leben – deine Farben, deine Entscheidung</div>
+    <div class="entry"><span class="time">[WELCOME]</span> ✅ Wähle deinen Status: Grün, Gelb, Rot oder Blau</div>
+  </div>
+
+  <footer>
+    <span>♟️</span> WELCOME · Selbstbestimmt · Inklusiv · Für alle Menschen · <span>iki1uc wieimmer</span>
+  </footer>
+
+
+<script>
+// ─── STATUS ──────────────────────────────────────────────────
+let currentStatus = 'green';
+
+const STATUS_DATA = {
+  green: {
+    icon: '🟢',
+    title: 'Grün · Alles gut',
+    desc: 'Ich bin zufrieden · Alles läuft gut · Nichts tun · Flow genießen',
+    log: '✅ Grün gewählt – alles gut, zufrieden, Flow'
+  },
+  yellow: {
+    icon: '🟡',
+    title: 'Gelb · Ich bin unsicher',
+    desc: 'Ich brauche Orientierung · Hilfe ist willkommen · Aber ich entscheide selbst',
+    log: '🟡 Gelb gewählt – Orientierung gesucht, Hilfe willkommen'
+  },
+  red: {
+    icon: '🔴',
+    title: 'Rot · Ich bin überfordert',
+    desc: 'Hier stimmt etwas nicht · Ich will keinen Diskurs · Betreuer wechseln sofort',
+    log: '🔴 Rot gewählt – Überforderung, Betreuerwechsel eingeleitet'
+  },
+  blue: {
+    icon: '🔵',
+    title: 'Blau · Flow',
+    desc: 'Ich bin im Einklang · Alles stimmt · Ich bin zufrieden · Genießen',
+    log: '🔵 Blau gewählt – Flow, Einklang, Zufriedenheit'
+  }
+};
+
+function setStatus(color) {
+  currentStatus = color;
+  const data = STATUS_DATA[color];
+
+  // Hauptanzeige
+  const display = document.getElementById('mainDisplay');
+  display.className = 'main-display ' + color;
+  document.getElementById('displayIcon').textContent = data.icon;
+  document.getElementById('displayTitle').textContent = data.title;
+  document.getElementById('displayDesc').textContent = data.desc;
+
+  // Karten aktivieren
+  ['green','yellow','red','blue'].forEach(c => {
+    const card = document.getElementById('card-' + c);
+    card.className = 'status-card';
+    if (c === color) {
+      card.classList.add('active-' + c);
+      card.setAttribute('aria-checked', 'true');
+    } else {
+      card.setAttribute('aria-checked', 'false');
+    }
+  });
+
+  // Betreuerwechsel bei Rot
+  const wechselBox = document.getElementById('wechselBox');
+  if (color === 'red') {
+    wechselBox.classList.add('show');
+    // Sprachausgabe bei Rot
+    speak('Rot gewählt. Betreuerwechsel wird eingeleitet. Kein Diskurs. Einfach wechseln.');
+  } else {
+    wechselBox.classList.remove('show');
+  }
+
+  // Hilfe-Output
+  document.getElementById('helpOutput').innerHTML = `
+    <span style="font-size:1.2rem;">${data.icon}</span>
+    <strong style="color:var(--${color});">${data.title}</strong><br>
+    <span style="color:#aaa;">${data.desc}</span>
+  `;
+
+  // Log
+  log(data.log);
+}
+
+// ─── BETREUERWECHSEL (ROT) ──────────────────────────────────
+function confirmWechsel() {
+  log('🔄 Betreuerwechsel bestätigt – ohne Diskussion, ohne Erklärung');
+  document.getElementById('helpOutput').innerHTML = `
+    <span style="color:var(--red);font-size:1.3rem;">✅ Betreuerwechsel wurde eingeleitet.</span><br>
+    <span style="color:#aaa;">Ein neuer Betreuer wird kontaktiert. Du musst nichts weiter tun.</span>
+  `;
+  speak('Betreuerwechsel bestätigt. Ein neuer Betreuer wird kontaktiert.');
+}
+
+// ─── HILFE ──────────────────────────────────────────────────
+const HELP_DATA = {
+  orientierung: '🧭 Orientierung: Schau auf deine Farben. Grün = gut, Gelb = Hilfe holen, Rot = wechseln, Blau = Flow. Du entscheidest.',
+  gesprach: '💬 Gespräch: Du bestimmst, wer dir nah sein darf. Nur wohlwollende Menschen werden zugelassen. Sag, was du brauchst.',
+  notfall: '🆘 Notfall: Wenn es wirklich brennt – hol dir sofort Hilfe. Du bist nicht allein. Deine Sicherheit zählt.'
+};
+
+function showHelp(topic) {
+  const msg = HELP_DATA[topic] || '❓ Thema nicht gefunden. Wähle ein anderes.';
+  document.getElementById('helpOutput').innerHTML = msg;
+  log(`🆘 Hilfe angezeigt: ${topic}`);
+  if (topic === 'notfall') {
+    speak('Notfallhilfe. Du bist nicht allein. Sicherheit zählt.');
+  } else {
+    speak(msg.replace(/[^a-zA-ZäöüßÄÖÜ .,!?]/g, ''));
+  }
+}
+
+// ─── SPRACHAUSGABE ──────────────────────────────────────────
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'de-DE';
+    utterance.rate = 0.85;
+    speechSynthesis.speak(utterance);
+  }
+}
+
+// ─── LOG ──────────────────────────────────────────────────
+function log(msg) {
+  const logDiv = document.getElementById('log');
+  const entry = document.createElement('div');
+  entry.className = 'entry';
+  const time = new Date().toLocaleTimeString();
+  entry.innerHTML = `<span class="time">[${time}]</span> ${msg}`;
+  logDiv.appendChild(entry);
+  logDiv.scrollTop = logDiv.scrollHeight;
+  while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
+}
+
+// ─── UHR ──────────────────────────────────────────────────────
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ─── TASTATUR ──────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if (e.key === '1') setStatus('green');
+  if (e.key === '2') setStatus('yellow');
+  if (e.key === '3') setStatus('red');
+  if (e.key === '4') setStatus('blue');
+  if (e.key === 'h' || e.key === 'H') showHelp('orientierung');
+  if (e.key === 'n' || e.key === 'N') showHelp('notfall');
+});
+
+// ─── INIT ──────────────────────────────────────────────────
+setStatus('green');
+log('🌈 WELCOME gestartet – selbstbestimmt leben, Farben als Wegweiser');
+</script>
+</body>
+</html>
