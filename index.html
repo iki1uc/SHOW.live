@@ -454,11 +454,14 @@ document.addEventListener('keydown', (e) => {
   if (e.key === '6') setMode('SCHWEBE');
 });
 
-// ─── INIT ──────────────────────────────────────────────────────
-setMode('NE');
-log('⌨️  c=CONNECT  s=SYNC  p=PULSE  w=WHIRL  x=RESET');
-log('⌨️  1=DA  2=NE  3=BEN  4=DOCH  5=NEIN  6=SCHWEBE');
-log('🌀 SHOW.live · MAGNETO‑MECHANIK · RANG · bereit');
+<script>
+  // ─── INIT ──────────────────────────────────────────────────────
+  setMode('NE');
+  log('⌨️  c=CONNECT  s=SYNC  p=PULSE  w=WHIRL  x=RESET');
+  log('⌨️  1=DA  2=NE  3=BEN  4=DOCH  5=NEIN  6=SCHWEBE');
+  log('🌀 SHOW.live · MAGNETO‑MECHANIK · RANG · bereit');
+</script>
+
 <!-- MATRIX für RING -->
 <div id="matrix"></div>
 
@@ -467,21 +470,18 @@ log('🌀 SHOW.live · MAGNETO‑MECHANIK · RANG · bereit');
 
 <!-- RING AKTIVIEREN -->
 <script>
-    if (window.RING) {
-        const matrix = document.getElementById("matrix");
-        if (matrix) {
-            RING.attach(matrix);
-            RING.enable();
-        } else {
-            console.warn("⚠️ MATRIX fehlt – RING kann nicht verbinden");
-        }
-    } else {
-        console.warn("⚠️ RING.js nicht geladen");
-    }
+  if (window.RING) {
+      const matrix = document.getElementById("matrix");
+      if (matrix) {
+          RING.attach(matrix);
+          RING.enable();
+      } else {
+          console.warn("⚠️ MATRIX fehlt – RING kann nicht verbinden");
+      }
+  } else {
+      console.warn("⚠️ RING.js nicht geladen");
+  }
 </script>
-
-</body>
-</html>
 
 </body>
 </html>
