@@ -3,536 +3,431 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔗 REAL‑CONNECT · 3 Teilnehmer · KI‑User‑KI‑Netzwerk</title>
-
+<title>🌀 3IN · 3OUT · BRIDGE · RING</title>
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-        background: #0a0a12;
-        color: #e6f6ff;
-        font-family: 'Consolas', monospace;
-        min-height: 100vh;
-        padding: 16px;
-        background-image: radial-gradient(ellipse at 30% 40%, #0a0a20 0%, #000 100%);
-    }
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background: #0a0a10;
+  color: #d0d9e6;
+  font-family: 'Consolas', monospace;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, #0f1a22, #000000);
+}
+.container {
+  max-width: 1200px;
+  width: 100%;
+  background: rgba(10,14,20,0.6);
+  border-radius: 28px;
+  border: 1px solid rgba(100,200,255,0.04);
+  padding: 24px;
+  backdrop-filter: blur(8px);
+}
+h1 {
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, #7fc9ff, #ffcc44, #ff66ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.sub {
+  text-align: center;
+  color: #3d5a70;
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+}
 
-    .container { max-width: 1400px; margin: 0 auto; }
+/* BRIDGE-LAYOUT */
+.bridge {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: stretch;
+  margin: 16px 0;
+}
+@media (max-width:700px){ .bridge { grid-template-columns:1fr; } }
 
-    .header { text-align: center; border-bottom: 2px solid #ffd700; padding-bottom: 12px; margin-bottom: 16px; }
-    .header h1 { font-size: 24px; color: #ffd700; letter-spacing: 4px; text-shadow: 0 0 30px rgba(255,215,0,0.2); }
-    .header .sub { color: #445555; font-size: 11px; letter-spacing: 3px; margin-top: 4px; }
-    .header .sub span { color: #88ddbb; }
+.port {
+  background: rgba(16,24,32,0.4);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(60,120,180,0.06);
+}
+.port h3 {
+  font-size: 11px;
+  color: #3d5a70;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.port .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 4px 0;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.port .item:hover { background: rgba(30,50,70,0.2); }
+.port .item .label { font-size: 13px; }
+.port .item .val { font-size: 11px; color: #6a8aa0; }
+.port.in .item { border-left-color: #7fc9ff; }
+.port.out .item { border-left-color: #ff66ff; }
 
-    .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+/* BRIDGE-CENTER */
+.bridge-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  gap: 8px;
+  min-width: 80px;
+}
+.bridge-center .symbol {
+  font-size: 36px;
+  color: #ffcc44;
+  text-shadow: 0 0 30px rgba(255,204,68,0.1);
+}
+.bridge-center .info {
+  font-size: 8px;
+  color: #3d5a70;
+  text-align: center;
+  letter-spacing: 1px;
+}
 
-    .panel {
-        background: rgba(10,10,20,0.4);
-        border: 1px solid rgba(255,255,255,0.04);
-        border-radius: 16px;
-        padding: 12px;
-        backdrop-filter: blur(10px);
-    }
-    .panel h2 {
-        color: #ffd700;
-        font-size: 14px;
-        border-bottom: 1px solid rgba(255,255,255,0.04);
-        padding-bottom: 6px;
-        margin-bottom: 8px;
-    }
+/* CONNECTIONS */
+.connections {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin: 12px 0;
+}
+.connections .link {
+  text-align: center;
+  padding: 6px;
+  font-size: 9px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 6px;
+  color: #3d5a70;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.connections .link.active {
+  color: #00ff88;
+  border: 1px solid rgba(0,255,136,0.1);
+}
+.connections .link:hover { background: rgba(30,50,70,0.2); }
 
-    .node-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-    .node-card {
-        background: #0e0e1a;
-        border: 1px solid #1a1a2a;
-        border-radius: 8px;
-        padding: 10px;
-        text-align: center;
-    }
-    .node-card.ki { border-color: rgba(0,255,136,0.3); }
-    .node-card.user { border-color: rgba(255,215,0,0.3); }
-    .node-card .name { font-size: 14px; font-weight: bold; }
-    .node-card.ki .name { color: #4f4; }
-    .node-card.user .name { color: #ffd700; }
-    .node-card .status { font-size: 11px; margin: 4px 0; }
-    .node-card .status.online { color: #4f4; }
-    .node-card .status.offline { color: #f44; }
-    .node-card .values { font-size: 9px; color: #666; margin-top: 4px; line-height: 1.5; }
-    .node-card .values span { color: #88ddbb; }
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 12px 0;
+}
+.controls button {
+  background: rgba(20,35,45,0.3);
+  color: #8ab8e6;
+  border: 1px solid rgba(100,200,255,0.04);
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 9px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.controls button:hover {
+  background: rgba(40,80,100,0.2);
+  color: #b8e2ff;
+}
+.controls button.active { background: rgba(40,80,100,0.1); color: #00ff88; }
 
-    .link-list { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
-    .link-bar {
-        background: #0e0e1a;
-        border: 1px solid #1a1a2a;
-        border-radius: 6px;
-        padding: 6px 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 11px;
-        color: #666;
-    }
-    .link-bar .label { color: #ffd700; }
-    .link-bar .wert { color: #00ffff; font-weight: bold; }
-    .link-bar button { font-size: 9px; padding: 3px 8px; }
+.log {
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 8px;
+  color: #3d5a70;
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid rgba(100,200,255,0.02);
+  margin-top: 12px;
+  font-family: 'Consolas', monospace;
+  line-height: 1.6;
+}
+.log .hl { color: #7fc9ff; }
+.log .ok { color: #00ff88; }
+.log .flow { color: #ffaa00; }
+.log .whirl { color: #ff66ff; }
 
-    .controls { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
-    button {
-        background: #111; color: #9cf; border: 1px solid #333;
-        padding: 6px 14px; border-radius: 6px; cursor: pointer;
-        font-family: inherit; font-size: 10px; transition: all 0.2s;
-    }
-    button:hover { background: #1a1a2a; border-color: #ffd700; }
-    button.primary { border-color: #ffd700; color: #ffd700; }
-    button.primary:hover { background: #ffd700; color: #000; }
-    button.connect { border-color: #00ffff; color: #00ffff; }
-    button.connect:hover { background: #00ffff; color: #000; }
-    button.sync { border-color: #4fc3f7; color: #4fc3f7; }
-    button.sync:hover { background: #4fc3f7; color: #000; }
-    button.danger { border-color: #f44; color: #f44; }
-    button.danger:hover { background: #f44; color: #000; }
-
-    .log {
-        background: rgba(0,0,0,0.3);
-        border-radius: 8px; padding: 8px; font-size: 10px; color: #88ddbb;
-        max-height: 150px; overflow-y: auto; font-family: monospace; line-height: 1.4;
-        border: 1px solid rgba(255,255,255,0.04); margin-top: 6px;
-    }
-    .log .entry { padding: 1px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .log .time { color: #445555; }
-    .log .ok { color: #4f4; } .log .warn { color: #ffaa00; }
-    .log .connect { color: #00ffff; } .log .sync { color: #4fc3f7; }
-    .log .error { color: #f44; } .log .data { color: #ffd700; }
-
-    .canvas-wrap {
-        background: rgba(10,10,20,0.4);
-        border: 1px solid rgba(255,255,255,0.04);
-        border-radius: 16px; padding: 12px;
-    }
-    #connectCanvas {
-        width: 100%; height: auto; aspect-ratio: 16/10;
-        background: #0a0a12; border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.04); display: block;
-    }
-
-    .footer {
-        text-align: center; margin-top: 16px; padding: 10px;
-        color: #222; font-size: 8px; letter-spacing: 2px;
-        border-top: 1px solid rgba(255,255,255,0.01);
-    }
-    .footer span { color: #ffd700; }
+.footer {
+  text-align: center;
+  font-size: 7px;
+  color: #1f2a36;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
 
-    <div class="header">
-        <h1>🔗 REAL‑CONNECT · 3 TEILNEHMER · KI‑USER‑KI</h1>
-        <div class="sub">Netzwerk · Vollvermascht · Ping · Sync · Data‑Flow · <span>wieimmer4u</span></div>
+<h1>🌀 3IN · 3OUT · BRIDGE</h1>
+<div class="sub">EINGANG · ÜBERGABE · AUSGANG · RING‑CORE</div>
+
+<!-- BRIDGE -->
+<div class="bridge">
+  <!-- EINGÄNGE (IN) -->
+  <div class="port in" id="inPort">
+    <h3>⬇ EINGANG</h3>
+    <div class="item" data-id="in1">
+      <span class="label">🔵 KI‑1</span>
+      <span class="val">Wert: <span id="in1val">1.00</span></span>
     </div>
-
-    <div class="grid">
-
-        <div class="canvas-wrap">
-            <h2>🌀 NETZWERK‑VISUALISIERUNG · 3 KNOTEN</h2>
-            <canvas id="connectCanvas"></canvas>
-            <div style="display:flex;gap:12px;margin-top:6px;font-size:9px;color:#445555;flex-wrap:wrap;">
-                <span>🟩 KI‑1</span>
-                <span>🟡 USER</span>
-                <span>🟦 KI‑2</span>
-                <span style="color:#00ffff;">— Verbindung aktiv</span>
-            </div>
-        </div>
-
-        <div class="panel">
-            <h2>⚙️ CONNECT‑CENTER · 3 TEILNEHMER</h2>
-
-            <div class="node-grid">
-                <div class="node-card ki" id="card-KI1">
-                    <div class="name">🟩 KI‑1</div>
-                    <div class="status online" id="status-KI1">● online</div>
-                    <div class="values">TMP: <span id="KI1-tmp">1.00</span><br>RA: <span id="KI1-ra">1.00</span> | RE: <span id="KI1-re">1.00</span></div>
-                </div>
-                <div class="node-card user" id="card-USER">
-                    <div class="name">🟡 USER</div>
-                    <div class="status online" id="status-USER">● online</div>
-                    <div class="values">TMP: <span id="USER-tmp">1.00</span><br>RA: <span id="USER-ra">1.00</span> | RE: <span id="USER-re">1.00</span></div>
-                </div>
-                <div class="node-card ki" id="card-KI2">
-                    <div class="name">🟦 KI‑2</div>
-                    <div class="status online" id="status-KI2">● online</div>
-                    <div class="values">TMP: <span id="KI2-tmp">1.00</span><br>RA: <span id="KI2-ra">1.00</span> | RE: <span id="KI2-re">1.00</span></div>
-                </div>
-            </div>
-
-            <div class="link-list">
-                <div class="link-bar">
-                    <span class="label">🔗 KI‑1 ↔ USER</span>
-                    <span class="wert" id="link-KI1-USER">○ INAKTIV</span>
-                    <button class="connect" data-link="KI1-USER">TOGGLE</button>
-                </div>
-                <div class="link-bar">
-                    <span class="label">🔗 USER ↔ KI‑2</span>
-                    <span class="wert" id="link-USER-KI2">○ INAKTIV</span>
-                    <button class="connect" data-link="USER-KI2">TOGGLE</button>
-                </div>
-                <div class="link-bar">
-                    <span class="label">🔗 KI‑1 ↔ KI‑2</span>
-                    <span class="wert" id="link-KI1-KI2">○ INAKTIV</span>
-                    <button class="connect" data-link="KI1-KI2">TOGGLE</button>
-                </div>
-            </div>
-
-            <div class="controls">
-                <button class="primary" id="btn-connect-all">🔗 CONNECT ALL</button>
-                <button class="sync" id="btn-sync">🔄 SYNC ALLE</button>
-                <button class="connect" id="btn-ping">📡 PING ALLE</button>
-                <button id="btn-data">📊 DATA‑FLOW</button>
-                <button id="btn-auto">▶ AUTO</button>
-                <button class="danger" id="btn-reset">⟲ RESET</button>
-            </div>
-
-            <div class="log" id="log">
-                <div class="entry"><span class="time">[INIT]</span> <span class="ok">REAL‑CONNECT · 3 Teilnehmer · bereit</span></div>
-            </div>
-        </div>
+    <div class="item" data-id="in2">
+      <span class="label">🟡 USER</span>
+      <span class="val">Wert: <span id="in2val">1.00</span></span>
     </div>
-
-    <div class="footer">
-        <span>🔗</span> REAL‑CONNECT · KI‑1 · USER · KI‑2 · Vollvermascht · <span>wieimmer4u</span>
+    <div class="item" data-id="in3">
+      <span class="label">🟣 KI‑2</span>
+      <span class="val">Wert: <span id="in3val">1.00</span></span>
     </div>
+  </div>
+
+  <!-- BRIDGE-CENTER (ÜBERGABE) -->
+  <div class="bridge-center">
+    <div class="symbol">⟷</div>
+    <div class="info">BRIDGE<br>TRANSFER</div>
+    <div class="info" style="font-size:10px; color:#ffcc44;" id="bridgeStatus">● bereit</div>
+  </div>
+
+  <!-- AUSGÄNGE (OUT) -->
+  <div class="port out" id="outPort">
+    <h3>⬆ AUSGANG</h3>
+    <div class="item" data-id="out1">
+      <span class="label">🟢 Wasser</span>
+      <span class="val">Wert: <span id="out1val">0.00</span></span>
+    </div>
+    <div class="item" data-id="out2">
+      <span class="label">🔴 Eis</span>
+      <span class="val">Wert: <span id="out2val">0.00</span></span>
+    </div>
+    <div class="item" data-id="out3">
+      <span class="label">🟠 Dampf</span>
+      <span class="val">Wert: <span id="out3val">0.00</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- VERBINDUNGEN (3×3 MATRIX) -->
+<div class="connections" id="connections">
+  <div class="link" data-from="in1" data-to="out1">KI‑1 → Wasser</div>
+  <div class="link" data-from="in1" data-to="out2">KI‑1 → Eis</div>
+  <div class="link" data-from="in1" data-to="out3">KI‑1 → Dampf</div>
+  <div class="link" data-from="in2" data-to="out1">USER → Wasser</div>
+  <div class="link" data-from="in2" data-to="out2">USER → Eis</div>
+  <div class="link" data-from="in2" data-to="out3">USER → Dampf</div>
+  <div class="link" data-from="in3" data-to="out1">KI‑2 → Wasser</div>
+  <div class="link" data-from="in3" data-to="out2">KI‑2 → Eis</div>
+  <div class="link" data-from="in3" data-to="out3">KI‑2 → Dampf</div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button onclick="transferAll()">⟷ TRANSFER ALL</button>
+  <button onclick="randomize()">🎲 RANDOMIZE</button>
+  <button onclick="stepTransfer()">⏭ STEP</button>
+  <button onclick="resetBridge()">⟲ RESET</button>
+</div>
+
+<!-- LOG -->
+<div class="log" id="log">[🌀] 3IN·3OUT BRIDGE geladen · bereit</div>
+
+<div class="footer">🌀 3IN · 3OUT · BRIDGE · RING‑CORE · wieimmer4u</div>
 
 </div>
 
 <script>
-// ================================================================
-// 1. DIE 3 TEILNEHMER (KI‑1, USER, KI‑2)
-// ================================================================
+// ============================================================
+// 3IN · 3OUT · BRIDGE · RING‑CORE
+// ============================================================
 
-function makeNode(id, name, role) {
-    return { id, name, role, tmp: 1, ra: 1, re: 1, online: true, ping: 0 };
-}
-
-const NODES = {
-    KI1:  makeNode('KI1',  'KI‑1',  'KI'),
-    USER: makeNode('USER', 'USER',  'User'),
-    KI2:  makeNode('KI2',  'KI‑2',  'KI')
+// ---- STATE ----
+const state = {
+  in: {
+    in1: { label: 'KI‑1', value: 1.00, active: true },
+    in2: { label: 'USER', value: 1.00, active: true },
+    in3: { label: 'KI‑2', value: 1.00, active: true }
+  },
+  out: {
+    out1: { label: 'Wasser', value: 0.00, active: false },
+    out2: { label: 'Eis', value: 0.00, active: false },
+    out3: { label: 'Dampf', value: 0.00, active: false }
+  },
+  links: {
+    in1_out1: false,
+    in1_out2: false,
+    in1_out3: false,
+    in2_out1: false,
+    in2_out2: false,
+    in2_out3: false,
+    in3_out1: false,
+    in3_out2: false,
+    in3_out3: false
+  }
 };
 
-// Alle möglichen Verbindungen (Vollvermaschung: KI1‑USER, USER‑KI2, KI1‑KI2)
-const LINKS = {
-    'KI1-USER': { a: 'KI1', b: 'USER', connected: false },
-    'USER-KI2': { a: 'USER', b: 'KI2', connected: false },
-    'KI1-KI2':  { a: 'KI1', b: 'KI2', connected: false }
-};
-
-// ================================================================
-// 2. STATE
-// ================================================================
-
-let cycle = 0;
-let running = false;
-let autoTimer = null;
-const MAX_LOG = 40;
-
-// ================================================================
-// 3. LOG
-// ================================================================
-
-function log(msg, type = 'ok') {
-    const logDiv = document.getElementById('log');
-    const entry = document.createElement('div');
-    entry.className = 'entry';
-    const time = new Date().toLocaleTimeString();
-    const cls = ['ok','connect','sync','error','data','warn'].includes(type) ? type : 'warn';
-    entry.innerHTML = `<span class="time">[${time}]</span> <span class="${cls}">${msg}</span>`;
-    logDiv.appendChild(entry);
-    logDiv.scrollTop = logDiv.scrollHeight;
-    while (logDiv.children.length > MAX_LOG) logDiv.removeChild(logDiv.firstChild);
-}
-
-// ================================================================
-// 4. UPDATE UI
-// ================================================================
-
+// ---- RENDER UI ----
 function updateUI() {
-    Object.values(NODES).forEach(n => {
-        document.getElementById(`${n.id}-tmp`).textContent = n.tmp.toFixed(2);
-        document.getElementById(`${n.id}-ra`).textContent = n.ra.toFixed(2);
-        document.getElementById(`${n.id}-re`).textContent = n.re.toFixed(2);
-        const st = document.getElementById(`status-${n.id}`);
-        st.textContent = n.online ? '● online' : '● offline';
-        st.className = 'status ' + (n.online ? 'online' : 'offline');
-    });
+  // Eingänge
+  document.getElementById('in1val').textContent = state.in.in1.value.toFixed(2);
+  document.getElementById('in2val').textContent = state.in.in2.value.toFixed(2);
+  document.getElementById('in3val').textContent = state.in.in3.value.toFixed(2);
 
-    Object.entries(LINKS).forEach(([key, link]) => {
-        const el = document.getElementById(`link-${key}`);
-        el.textContent = link.connected ? '● AKTIV' : '○ INAKTIV';
-        el.style.color = link.connected ? '#4f4' : '#f44';
-    });
+  // Ausgänge
+  document.getElementById('out1val').textContent = state.out.out1.value.toFixed(2);
+  document.getElementById('out2val').textContent = state.out.out2.value.toFixed(2);
+  document.getElementById('out3val').textContent = state.out.out3.value.toFixed(2);
 
-    drawVisualization();
-}
-
-// ================================================================
-// 5. VERBINDUNGS‑FUNKTIONEN (Netzwerk‑Connect als Funktion)
-// ================================================================
-
-// ─── Einzelnen Link umschalten (KI‑User‑KI Verbindung) ─────────
-function toggleLink(key) {
-    const link = LINKS[key];
-    if (!link) return;
-    link.connected = !link.connected;
-    const a = NODES[link.a], b = NODES[link.b];
-    if (link.connected) {
-        log(`🔗 Verbindung hergestellt: ${a.name} ↔ ${b.name}`, 'connect');
+  // Links
+  document.querySelectorAll('.link').forEach(el => {
+    const from = el.dataset.from;
+    const to = el.dataset.to;
+    const key = `${from}_${to}`;
+    if (state.links[key]) {
+      el.classList.add('active');
+      el.textContent = el.textContent.replace('→', '↔') + ' ●';
     } else {
-        log(`🔗 Verbindung getrennt: ${a.name} ↔ ${b.name}`, 'warn');
+      el.classList.remove('active');
+      el.textContent = el.textContent.replace('↔', '→').replace(' ●', '');
     }
-    updateUI();
+  });
+
+  // Bridge-Status
+  const activeLinks = Object.values(state.links).filter(v => v).length;
+  document.getElementById('bridgeStatus').textContent = activeLinks > 0 ? `● ${activeLinks} Verbindungen aktiv` : '○ bereit';
 }
 
-// ─── Alle Verbindungen herstellen (volles KI‑User‑KI Netzwerk) ─
-function connectAll() {
-    Object.entries(LINKS).forEach(([key, link]) => {
-        link.connected = true;
-    });
-    Object.values(NODES).forEach(n => n.online = true);
-    log('🔗 Vollvermaschtes Netzwerk aktiv: KI‑1 ↔ USER ↔ KI‑2 (+ KI‑1 ↔ KI‑2)', 'connect');
-    updateUI();
+// ---- TOGGLE LINK ----
+function toggleLink(from, to) {
+  const key = `${from}_${to}`;
+  state.links[key] = !state.links[key];
+  const inVal = state.in[from].value;
+  const outKey = to;
+  if (state.links[key]) {
+    state.out[outKey].value = inVal;
+    state.out[outKey].active = true;
+    log(`🔗 Verbindung: ${state.in[from].label} → ${state.out[outKey].label} (${inVal.toFixed(2)})`);
+  } else {
+    state.out[outKey].value = 0;
+    state.out[outKey].active = false;
+    log(`⏸ Trennung: ${state.in[from].label} → ${state.out[outKey].label}`);
+  }
+  updateUI();
 }
 
-// ─── SYNC: Werte über alle aktiven Verbindungen angleichen ────
-function doSync() {
-    const activeLinks = Object.values(LINKS).filter(l => l.connected);
-    if (activeLinks.length === 0) {
-        log('⚠️ Keine aktive Verbindung – Sync nicht möglich', 'warn');
-        return;
+// ---- TRANSFER ALL ----
+function transferAll() {
+  let count = 0;
+  Object.keys(state.links).forEach(key => {
+    const [from, to] = key.split('_');
+    if (state.links[key]) {
+      const inVal = state.in[from].value;
+      state.out[to].value = inVal;
+      state.out[to].active = true;
+      count++;
     }
-    activeLinks.forEach(link => {
-        const a = NODES[link.a], b = NODES[link.b];
-        const avgTmp = (a.tmp + b.tmp) / 2;
-        const avgRa = (a.ra + b.ra) / 2;
-        const avgRe = (a.re + b.re) / 2;
-        a.tmp = b.tmp = avgTmp;
-        a.ra = b.ra = avgRa;
-        a.re = b.re = avgRe;
-    });
-    log(`🔄 Sync durchgeführt über ${activeLinks.length} Verbindung(en)`, 'sync');
-    updateUI();
+  });
+  log(`⟷ TRANSFER ALL: ${count} Verbindungen aktualisiert`);
+  updateUI();
 }
 
-// ─── PING: Latenz über alle aktiven Verbindungen ───────────────
-function doPing() {
-    const activeLinks = Object.values(LINKS).filter(l => l.connected);
-    if (activeLinks.length === 0) {
-        log('⚠️ Keine aktive Verbindung – Ping nicht möglich', 'warn');
-        return;
+// ---- RANDOMIZE ----
+function randomize() {
+  Object.keys(state.in).forEach(key => {
+    state.in[key].value = 0.5 + Math.random() * 2.0;
+  });
+  // Aktive Links übertragen
+  Object.keys(state.links).forEach(key => {
+    if (state.links[key]) {
+      const [from, to] = key.split('_');
+      state.out[to].value = state.in[from].value;
+      state.out[to].active = true;
     }
-    activeLinks.forEach(link => {
-        const ping = Math.floor(Math.random() * 20 + 5);
-        NODES[link.a].ping = ping;
-        NODES[link.b].ping = ping;
-        const a = NODES[link.a], b = NODES[link.b];
-        log(`📡 Ping ${a.name} ↔ ${b.name}: ${ping}ms`, 'connect');
-    });
+  });
+  log('🎲 RANDOMIZE: Neue Werte gesetzt');
+  updateUI();
 }
 
-// ─── DATA‑FLOW: Daten fließen entlang KI‑1 → USER → KI‑2 ───────
-function doDataFlow() {
-    const activeLinks = Object.values(LINKS).filter(l => l.connected);
-    if (activeLinks.length === 0) {
-        log('⚠️ Keine aktive Verbindung – Data‑Flow nicht möglich', 'warn');
-        return;
-    }
-    activeLinks.forEach(link => {
-        const from = NODES[link.a], to = NODES[link.b];
-        to.tmp = from.tmp * (0.95 + Math.random() * 0.1);
-        to.ra = from.ra * (0.95 + Math.random() * 0.1);
-        to.re = from.re * (0.95 + Math.random() * 0.1);
-        from.tmp += (Math.random() - 0.5) * 0.05;
-        [from, to].forEach(n => {
-            n.tmp = Math.min(1.8, Math.max(0.4, n.tmp));
-            n.ra = Math.min(1.8, Math.max(0.4, n.ra));
-            n.re = Math.min(1.8, Math.max(0.4, n.re));
-        });
-        log(`📊 Data‑Flow: ${from.name} → ${to.name}`, 'data');
-    });
-    updateUI();
+// ---- STEP ----
+function stepTransfer() {
+  // Schrittweise Werte ändern
+  Object.keys(state.in).forEach(key => {
+    state.in[key].value += (Math.random() - 0.5) * 0.2;
+    state.in[key].value = Math.max(0.1, Math.min(3.0, state.in[key].value));
+  });
+  transferAll();
+  log('⏭ STEP: Werte leicht verändert');
 }
 
-// ─── AUTO ───────────────────────────────────────────────────────
-function toggleAuto() {
-    running = !running;
-    if (running) {
-        autoTimer = setInterval(() => {
-            doPing();
-            doDataFlow();
-        }, 3000);
-        document.getElementById('btn-auto').textContent = '⏸ PAUSE';
-        log('▶ AUTO gestartet', 'ok');
-    } else {
-        clearInterval(autoTimer);
-        autoTimer = null;
-        document.getElementById('btn-auto').textContent = '▶ AUTO';
-        log('⏸ AUTO pausiert', 'warn');
-    }
+// ---- RESET ----
+function resetBridge() {
+  Object.keys(state.in).forEach(key => {
+    state.in[key].value = 1.00;
+    state.in[key].active = true;
+  });
+  Object.keys(state.out).forEach(key => {
+    state.out[key].value = 0.00;
+    state.out[key].active = false;
+  });
+  Object.keys(state.links).forEach(key => {
+    state.links[key] = false;
+  });
+  log('⟲ RESET: Alle Verbindungen und Werte zurückgesetzt');
+  updateUI();
 }
 
-// ─── RESET ──────────────────────────────────────────────────────
-function doReset() {
-    Object.values(NODES).forEach(n => { n.tmp = 1; n.ra = 1; n.re = 1; n.ping = 0; n.online = true; });
-    Object.values(LINKS).forEach(l => l.connected = false);
-    if (running) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-        running = false;
-        document.getElementById('btn-auto').textContent = '▶ AUTO';
-    }
-    log('⟲ RESET – Netzwerk zurückgesetzt', 'warn');
-    updateUI();
+// ---- LOG ----
+function log(msg) {
+  const el = document.getElementById('log');
+  const time = new Date().toLocaleTimeString();
+  el.innerHTML += `<div>[${time}] ${msg}</div>`;
+  el.scrollTop = el.scrollHeight;
+  if (el.children.length > 50) el.removeChild(el.firstChild);
 }
 
-// ================================================================
-// 6. VISUALISIERUNG (Canvas, Dreieck KI‑1 / USER / KI‑2)
-// ================================================================
-
-function drawVisualization() {
-    const canvas = document.getElementById('connectCanvas');
-    const rect = canvas.parentElement.getBoundingClientRect();
-    const w = rect.width - 24 || 800;
-    const h = w * 0.625 || 500;
-    canvas.width = w;
-    canvas.height = h;
-
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, w, h);
-
-    const cx = w / 2, cy = h / 2;
-    const radius = Math.min(w, h) * 0.32;
-
-    // Positionen im Dreieck: KI‑1 unten links, USER oben Mitte, KI‑2 unten rechts
-    const pos = {
-        KI1:  { x: cx - radius, y: cy + radius * 0.6 },
-        USER: { x: cx,          y: cy - radius * 0.8 },
-        KI2:  { x: cx + radius, y: cy + radius * 0.6 }
-    };
-
-    const colorMap = { KI1: '#4f4', USER: '#ffd700', KI2: '#4fc3f7' };
-
-    // Verbindungslinien
-    Object.entries(LINKS).forEach(([key, link]) => {
-        const a = pos[link.a], b = pos[link.b];
-        if (link.connected) {
-            ctx.shadowBlur = 16;
-            ctx.shadowColor = 'rgba(0,255,255,0.25)';
-            ctx.strokeStyle = '#00ffff';
-            ctx.lineWidth = 2.5;
-            ctx.setLineDash([6, 8]);
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.shadowBlur = 0;
-
-            // Datenfluss-Partikel
-            for (let i = 0; i < 3; i++) {
-                const t = (i / 3 + Date.now() / 1800) % 1;
-                const x = a.x + (b.x - a.x) * t;
-                const y = a.y + (b.y - a.y) * t;
-                ctx.beginPath();
-                ctx.arc(x, y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,215,0,${0.3 + Math.sin(Date.now()/400+i)*0.2})`;
-                ctx.fill();
-            }
-        } else {
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([2, 6]);
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
-    });
-
-    // Knoten zeichnen
-    Object.entries(NODES).forEach(([id, n]) => {
-        const p = pos[id];
-        const size = 32 + n.tmp * 8;
-        ctx.shadowBlur = 25;
-        ctx.shadowColor = n.online ? `rgba(0,0,0,0)` : 'rgba(255,68,68,0.2)';
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = n.online ? colorMap[id] + '33' : 'rgba(255,68,68,0.2)';
-        ctx.fill();
-        ctx.strokeStyle = n.online ? colorMap[id] : '#f44';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 13px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(n.role === 'KI' ? '🤖' : '🧑', p.x, p.y - 12);
-        ctx.font = 'bold 11px Arial';
-        ctx.fillText(n.name, p.x, p.y + 2);
-        ctx.font = '8px Arial';
-        ctx.fillText(`TMP: ${n.tmp.toFixed(1)}`, p.x, p.y + 18);
-    });
-
-    ctx.fillStyle = '#445555';
-    ctx.font = '10px Arial';
-    ctx.textAlign = 'center';
-    const activeCount = Object.values(LINKS).filter(l => l.connected).length;
-    ctx.fillText(`${activeCount}/3 Verbindungen aktiv`, cx, h - 10);
-}
-
-// ================================================================
-// 7. CONTROLS
-// ================================================================
-
-document.querySelectorAll('[data-link]').forEach(btn => {
-    btn.addEventListener('click', () => toggleLink(btn.dataset.link));
+// ---- EVENT BINDING ----
+document.querySelectorAll('.link').forEach(el => {
+  el.addEventListener('click', () => {
+    toggleLink(el.dataset.from, el.dataset.to);
+  });
 });
-document.getElementById('btn-connect-all').addEventListener('click', connectAll);
-document.getElementById('btn-sync').addEventListener('click', doSync);
-document.getElementById('btn-ping').addEventListener('click', doPing);
-document.getElementById('btn-data').addEventListener('click', doDataFlow);
-document.getElementById('btn-auto').addEventListener('click', toggleAuto);
-document.getElementById('btn-reset').addEventListener('click', doReset);
 
-// ================================================================
-// 8. TASTATUR
-// ================================================================
-
+// ---- TASTATUR ----
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'c' || e.key === 'C') connectAll();
-    if (e.key === 's' || e.key === 'S') doSync();
-    if (e.key === 'p' || e.key === 'P') doPing();
-    if (e.key === 'd' || e.key === 'D') doDataFlow();
-    if (e.key === ' ') { e.preventDefault(); toggleAuto(); }
-    if (e.key === 'x' || e.key === 'X') doReset();
+  if (e.key === 't' || e.key === 'T') transferAll();
+  if (e.key === 'r' || e.key === 'R') randomize();
+  if (e.key === 's' || e.key === 'S') stepTransfer();
+  if (e.key === 'x' || e.key === 'X') resetBridge();
 });
 
-// ================================================================
-// 9. INIT
-// ================================================================
-
+// ---- INIT ----
 updateUI();
-log('🔗 REAL‑CONNECT · 3 Teilnehmer · geladen', 'ok');
-log('⌨️  c=Connect Alle  s=Sync  p=Ping  d=Data-Flow  space=Auto  x=Reset', 'ok');
-
-setInterval(() => drawVisualization(), 100);
+log('🌀 3IN·3OUT BRIDGE · bereit');
+log('⌨️ t=TRANSFER  r=RANDOMIZE  s=STEP  x=RESET');
+log('💡 Klick auf Verbindungen zum Toggeln');
 </script>
 
 </body>
