@@ -1,21 +1,15 @@
 // ============================================================
-// NChoch9 · NC.respo · Etage 9 · Mittel-Responder
+// NChoch9 · NC.respo · Etage 9 · Mittel-Responder (NEU)
 // ============================================================
 
-export const NChoch9 = {
+export const NChoch9 = (info = {}) => {
 
-    NC: "NC_HOCH_9",
-
-    farbe: "gold",
-
-    respo(info = {}) {
-        return {
-            NC: this.NC,
-            etage: 9,
-            farbe: this.farbe,
-            impuls: "mittel",
-            info,
-            zeit: new Date().toISOString()
-        };
-    }
+    return {
+        NC: "NC_HOCH_9",
+        etage: 9,
+        farbe: "gold",
+        impuls: "mittel",
+        info,
+        zeit: new Date().toISOString()
+    };
 };
