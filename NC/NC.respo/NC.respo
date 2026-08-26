@@ -1,10 +1,16 @@
-import { NChoch3 } from "./NChoch3.js";
-import { NChoch9 } from "./NChoch9.js";
-import { NChoch81 } from "./NChoch81.js";
+import { NChoch3 } from "./NChoch3/index.js";
+import { NChoch9 } from "./NChoch9/index.js";
+import { NChoch81 } from "./NChoch81/index.js";
 
 export const NCRESPO = {
 
     NC: "NC_RESPO_MASTER",
+
+    farben: {
+        3: "türkis",
+        9: "gold",
+        81: "blau"
+    },
 
     respo(etage = 3, info = {}) {
 
