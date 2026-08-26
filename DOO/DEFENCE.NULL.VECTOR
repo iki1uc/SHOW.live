@@ -1,1 +1,58 @@
+// 🛡 DEFENCE.NULL.VECTOR – 3×3 Schutz- und Kompatibilitätsmodul
+// Funktioniert für DOO, DOOR, DOCH – tut nichts, zeigt aber etwas.
+
+export const DEFENCE_NULL_VECTOR = {
+
+    name: "🛡 DEFENCE.NULL.VECTOR",
+    mode: "NE",
+    pulse: 0,
+
+    // 3×3 Matrix
+    matrix: {
+        DA:  [1,1,1],   // Vollkompatibel
+        NE:  [0,0,1],   // Neutral
+        BEN: [1,0,1]    // Teilkompatibel
+    },
+
+    // Defence: blockiert falsche Inputs
+    defence(input) {
+        const allowed = ["DA","NE","BEN"];
+        if (!allowed.includes(input)) {
+            return {
+                status: "defence-block",
+                message: "🛡 DEFENCE: Ungültiger Input blockiert",
+                input
+            };
+        }
+        return null;
+    },
+
+    // Hauptfunktion
+    set(input) {
+        // Defence prüfen
+        const block = this.defence(input);
+        if (block) return block;
+
+        this.mode = input;
+        this.pulse++;
+
+        const vector = this.matrix[input];
+
+        // Bonus-Modus
+        const bonus = (vector.join("") === "111")
+            ? "⭐ BONUS-MODUS AKTIV – Vollkompatibilität!"
+            : "—";
+
+        return {
+            status: "ok",
+            module: this.name,
+            mode: this.mode,
+            vector,
+            pulse: this.pulse,
+            bonus
+        };
+    }
+};
+
+export default DEFENCE_NULL_VECTOR;
 
