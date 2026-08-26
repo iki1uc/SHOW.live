@@ -460,6 +460,16 @@ log('⌨️  c=CONNECT  s=SYNC  p=PULSE  w=WHIRL  x=RESET');
 log('⌨️  1=DA  2=NE  3=BEN  4=DOCH  5=NEIN  6=SCHWEBE');
 log('🌀 SHOW.live · MAGNETO‑MECHANIK · RANG · bereit');
 </script>
+<!-- RING LADEN -->
+<script src="../RING/RING.js"></script>
+
+<!-- RING AKTIVIEREN -->
+<script>
+    if (window.RING) {
+        RING.attach(document.getElementById("matrix"));
+        RING.enable();
+    }
+</script>
 
 </body>
 </html>
