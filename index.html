@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌀 SHOW.live · MAGNETO‑MECHANIK · CONNECT · RANG</title>
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background: #0a0a0f;
+  color: #d0d9e6;
+  font-family: 'Consolas', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 0%, #0f1a22, #000000);
+}
+.container {
+  max-width: 1400px;
+  width: 100%;
+  background: rgba(10,14,20,0.5);
+  border: 1px solid rgba(100,200,255,0.03);
+  border-radius: 28px;
+  padding: 24px;
+  backdrop-filter: blur(8px);
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  background: linear-gradient(90deg, #7fc9ff, #ffcc44, #ff66ff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header .sub {
+  color: #3d5a70;
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+.header .sub span { color: #ffd700; }
+
+/* STATUS‑LEISTE */
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  font-size: 9px;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+.status-bar .item { display: flex; align-items: center; gap: 4px; }
+.status-bar .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.status-bar .dot.on { background: #00ff88; box-shadow: 0 0 8px #00ff8844; }
+.status-bar .dot.off { background: #445555; }
+.status-bar .dot.warn { background: #ffaa00; box-shadow: 0 0 8px #ffaa0044; }
+.status-bar .dot.pulse { background: #ff66ff; box-shadow: 0 0 8px #ff66ff44; animation: pulse 1s infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* 3×3 MATRIX – CORE */
+.matrix-core {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+.matrix-core .cell {
+  background: rgba(16,24,32,0.3);
+  border: 1px solid rgba(60,120,180,0.06);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.matrix-core .cell:hover {
+  border-color: rgba(120,200,255,0.15);
+  background: rgba(30,50,70,0.15);
+}
+.matrix-core .cell .label { font-size: 18px; font-weight: bold; }
+.matrix-core .cell .desc { font-size: 8px; color: #3d5a70; margin-top: 2px; }
+.matrix-core .cell .status { font-size: 7px; margin-top: 4px; }
+.matrix-core .cell .status.on { color: #00ff88; }
+.matrix-core .cell .status.off { color: #445555; }
+.matrix-core .cell .status.half { color: #ffaa00; }
+
+/* MODULE‑GRID */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 6px;
+  margin: 12px 0;
+}
+.module-grid .mod {
+  background: rgba(16,24,32,0.2);
+  border: 1px solid rgba(60,120,180,0.04);
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.module-grid .mod:hover {
+  border-color: rgba(120,200,255,0.1);
+  background: rgba(30,50,70,0.1);
+}
+.module-grid .mod .icon { font-size: 20px; }
+.module-grid .mod .name { font-size: 9px; color: #8ab8e6; margin-top: 2px; }
+.module-grid .mod .state { font-size: 7px; color: #3d5a70; }
+.module-grid .mod .state.on { color: #00ff88; }
+.module-grid .mod .state.off { color: #445555; }
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 12px 0;
+}
+.controls button {
+  background: rgba(20,35,45,0.3);
+  color: #8ab8e6;
+  border: 1px solid rgba(100,200,255,0.04);
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.controls button:hover {
+  background: rgba(40,80,100,0.2);
+  color: #b8e2ff;
+}
+.controls button.primary { border-color: rgba(255,215,0,0.2); color: #ffd700; }
+.controls button.primary:hover { background: rgba(255,215,0,0.05); }
+.controls button.connect { border-color: rgba(0,255,136,0.2); color: #00ff88; }
+.controls button.connect:hover { background: rgba(0,255,136,0.05); }
+.controls button.danger { border-color: rgba(255,68,68,0.2); color: #f44; }
+.controls button.danger:hover { background: rgba(255,68,68,0.05); }
+
+/* LOG */
+.log {
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 8px;
+  color: #3d5a70;
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid rgba(100,200,255,0.02);
+  margin-top: 12px;
+  font-family: 'Consolas', monospace;
+  line-height: 1.6;
+}
+.log .hl { color: #7fc9ff; }
+.log .ok { color: #00ff88; }
+.log .flow { color: #ffaa00; }
+.log .whirl { color: #ff66ff; }
+.log .connect { color: #00ffff; }
+.log .warn { color: #ff8844; }
+
+.footer {
+  text-align: center;
+  font-size: 7px;
+  color: #1f2a36;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+.footer span { color: #ffd700; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🌀 SHOW.live · MAGNETO‑MECHANIK</h1>
+    <div class="sub">CONNECT · RANG · ID · ETAGE · KORRIDOR · <span>wieimmer4u</span></div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-bar">
+    <div class="item"><span class="dot on"></span> CONNECT</div>
+    <div class="item"><span class="dot pulse"></span> WHIRL</div>
+    <div class="item"><span class="dot on"></span> OS</div>
+    <div class="item"><span class="dot on"></span> RING</div>
+    <div class="item"><span class="dot on"></span> GANG</div>
+    <div class="item"><span class="dot warn"></span> NC</div>
+    <div class="item"><span class="dot on"></span> DOO</div>
+    <div class="item"><span class="dot on"></span> DOOR</div>
+    <div class="item"><span class="dot pulse"></span> DOCH</div>
+    <div class="item"><span class="dot off"></span> ANKER</div>
+  </div>
+
+  <!-- 3×3 MATRIX – DA / NE / BEN / DOCH / NEIN -->
+  <div class="matrix-core" id="matrix">
+    <div class="cell" data-mode="DA">
+      <div class="label" style="color:#00ff88;">DA</div>
+      <div class="desc">Aktiv · Voll</div>
+      <div class="status on">● aktiv</div>
+    </div>
+    <div class="cell" data-mode="NE">
+      <div class="label" style="color:#ffaa00;">NE</div>
+      <div class="desc">Neutral · DOCH</div>
+      <div class="status on">● aktiv</div>
+    </div>
+    <div class="cell" data-mode="BEN">
+      <div class="label" style="color:#ff66ff;">BEN</div>
+      <div class="desc">Halb · DOO+DOCH</div>
+      <div class="status half">◐ halb</div>
+    </div>
+    <div class="cell" data-mode="DOCH">
+      <div class="label" style="color:#ffd700;">DOCH</div>
+      <div class="desc">Override</div>
+      <div class="status on">● aktiv</div>
+    </div>
+    <div class="cell" data-mode="NEIN">
+      <div class="label" style="color:#f44;">NEIN</div>
+      <div class="desc">Defence · Block</div>
+      <div class="status off">○ inaktiv</div>
+    </div>
+    <div class="cell" data-mode="SCHWEBE">
+      <div class="label" style="color:#7fc9ff;">SCHWEBE</div>
+      <div class="desc">Gleit · Neutral</div>
+      <div class="status pulse">● schwebend</div>
+    </div>
+  </div>
+
+  <!-- MODULE -->
+  <div class="module-grid" id="modules">
+    <div class="mod" data-mod="DOO"><div class="icon">⚡</div><div class="name">DOO</div><div class="state on">● Engine</div></div>
+    <div class="mod" data-mod="DOOR"><div class="icon">🚪</div><div class="name">DOOR</div><div class="state on">● Gateway</div></div>
+    <div class="mod" data-mod="DOCH"><div class="icon">🌀</div><div class="name">DOCH</div><div class="state pulse">● Frame</div></div>
+    <div class="mod" data-mod="OS"><div class="icon">🧠</div><div class="name">OS</div><div class="state on">● Mind</div></div>
+    <div class="mod" data-mod="RING"><div class="icon">◈</div><div class="name">RING</div><div class="state on">● Continuum</div></div>
+    <div class="mod" data-mod="GANG"><div class="icon">▣</div><div class="name">GANG</div><div class="state on">● Matrix</div></div>
+    <div class="mod" data-mod="NC"><div class="icon">⚙️</div><div class="name">NC</div><div class="state warn">◐ Engine</div></div>
+    <div class="mod" data-mod="NOAH"><div class="icon">🌊</div><div class="name">NOAH</div><div class="state on">● Vector</div></div>
+    <div class="mod" data-mod="ANKER"><div class="icon">🔱</div><div class="name">ANKER</div><div class="state off">○ idle</div></div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="primary" id="btnConnect">🔗 CONNECT ALL</button>
+    <button class="connect" id="btnSync">🔄 SYNC</button>
+    <button id="btnPulse">🌀 PULSE</button>
+    <button id="btnWhirl">🌀 WHIRL</button>
+    <button id="btnReset" class="danger">⟲ RESET</button>
+  </div>
+
+  <!-- LOG -->
+  <div class="log" id="log">[🌀] SHOW.live · MAGNETO‑MECHANIK · bereit</div>
+
+  <div class="footer">🌀 SHOW.live · ID · ETAGE · KORRIDOR · <span>RANG</span> · wieimmer4u</div>
+
+</div>
+
+<script>
+// ================================================================
+// SHOW.live · MAGNETO‑MECHANIK · CONNECT · RANG
+// ================================================================
+
+// ─── STATE ──────────────────────────────────────────────────────
+const STATE = {
+  mode: 'NE',
+  connected: false,
+  pulse: 0,
+  whirl: false,
+  modules: {
+    DOO: { active: true, engine: true },
+    DOOR: { active: true, open: true },
+    DOCH: { active: true, frame: true },
+    OS: { active: true },
+    RING: { active: true },
+    GANG: { active: true },
+    NC: { active: false },
+    NOAH: { active: true },
+    ANKER: { active: false }
+  },
+  matrix: {
+    DA:  { doo: true, door: true, doch: true, axiom: 'Aktivierung' },
+    NE:  { doo: false, door: false, doch: true, axiom: 'Neutralisierung' },
+    BEN: { doo: true, door: false, doch: true, axiom: 'Bindung' },
+    DOCH:{ doo: false, door: false, doch: true, axiom: 'Override' },
+    NEIN:{ doo: false, door: false, doch: false, axiom: 'Block' },
+    SCHWEBE:{ doo: true, door: true, doch: true, axiom: 'Gleit' }
+  }
+};
+
+// ─── LOG ──────────────────────────────────────────────────────
+function log(msg, type = 'hl') {
+  const el = document.getElementById('log');
+  const time = new Date().toLocaleTimeString();
+  const cls = ['hl','ok','flow','whirl','connect','warn'].includes(type) ? type : 'hl';
+  el.innerHTML += `<div>[${time}] <span class="${cls}">${msg}</span></div>`;
+  el.scrollTop = el.scrollHeight;
+  if (el.children.length > 50) el.removeChild(el.firstChild);
+}
+
+// ─── MATRIX SET ──────────────────────────────────────────────
+function setMode(mode) {
+  if (!STATE.matrix[mode]) {
+    log(`❌ Unbekannter Modus: ${mode}`, 'warn');
+    return;
+  }
+
+  STATE.mode = mode;
+  const m = STATE.matrix[mode];
+
+  STATE.modules.DOO.active = m.doo;
+  STATE.modules.DOOR.active = m.door;
+  STATE.modules.DOCH.active = m.doch;
+
+  STATE.modules.DOO.engine = m.doo;
+  STATE.modules.DOOR.open = m.door;
+  STATE.modules.DOCH.frame = m.doch;
+
+  log(`🌀 MODUS: ${mode} · ${m.axiom}`, 'flow');
+
+  // UI aktualisieren
+  document.querySelectorAll('.matrix-core .cell').forEach(el => {
+    const mMode = el.dataset.mode;
+    const isActive = mMode === mode;
+    el.style.borderColor = isActive ? 'rgba(255,215,0,0.2)' : '';
+    el.style.background = isActive ? 'rgba(255,215,0,0.04)' : '';
+  });
+
+  updateModules();
+}
+
+// ─── UPDATE MODULES ──────────────────────────────────────────
+function updateModules() {
+  document.querySelectorAll('.module-grid .mod').forEach(el => {
+    const mod = el.dataset.mod;
+    const state = STATE.modules[mod];
+    if (!state) return;
+    const isActive = state.active !== undefined ? state.active : true;
+    const statusEl = el.querySelector('.state');
+    if (statusEl) {
+      statusEl.textContent = isActive ? '● aktiv' : '○ inaktiv';
+      statusEl.className = 'state ' + (isActive ? 'on' : 'off');
+    }
+  });
+}
+
+// ─── CONNECT ──────────────────────────────────────────────────
+function connectAll() {
+  STATE.connected = true;
+  STATE.modules.DOO.active = true;
+  STATE.modules.DOOR.active = true;
+  STATE.modules.DOCH.active = true;
+  STATE.modules.OS.active = true;
+  STATE.modules.RING.active = true;
+  STATE.modules.GANG.active = true;
+  STATE.modules.NOAH.active = true;
+
+  log('🔗 CONNECT ALL · Vollvermaschung aktiviert', 'connect');
+  updateModules();
+  document.querySelector('.status-bar .dot.on').style.background = '#00ff88';
+}
+
+// ─── SYNC ─────────────────────────────────────────────────────
+function syncAll() {
+  const val = 0.95 + Math.random() * 0.10;
+  log(`🔄 SYNC · Alle Module synchronisiert (${val.toFixed(2)})`, 'ok');
+}
+
+// ─── PULSE ────────────────────────────────────────────────────
+function doPulse() {
+  STATE.pulse++;
+  const symbols = ['✨','⚡','🌀','🔥','💫','🌟'];
+  const sym = symbols[STATE.pulse % symbols.length];
+  log(`${sym} PULSE #${STATE.pulse} · Energiefluss aktiv`, 'whirl');
+  if (STATE.pulse % 4 === 0) {
+    log('🌀 WHIRL‑EFFEKT · Rotation aktiviert', 'whirl');
+  }
+}
+
+// ─── WHIRL ────────────────────────────────────────────────────
+function doWhirl() {
+  STATE.whirl = !STATE.whirl;
+  log(STATE.whirl ? '🌀 WHIRL aktiviert · PQ‑Root' : '⏸ WHIRL deaktiviert', 'whirl');
+}
+
+// ─── RESET ────────────────────────────────────────────────────
+function resetAll() {
+  STATE.mode = 'NE';
+  STATE.connected = false;
+  STATE.pulse = 0;
+  STATE.whirl = false;
+
+  Object.keys(STATE.modules).forEach(key => {
+    if (key === 'NC' || key === 'ANKER') {
+      STATE.modules[key].active = false;
+    } else {
+      STATE.modules[key].active = true;
+    }
+  });
+
+  STATE.modules.DOO.engine = true;
+  STATE.modules.DOOR.open = true;
+  STATE.modules.DOCH.frame = true;
+
+  log('⟲ RESET · Alle Zustände zurückgesetzt', 'warn');
+  updateModules();
+  setMode('NE');
+  document.querySelector('.status-bar .dot.on').style.background = '#00ff88';
+}
+
+// ─── EVENT BINDING ───────────────────────────────────────────
+document.querySelectorAll('.matrix-core .cell').forEach(el => {
+  el.addEventListener('click', () => setMode(el.dataset.mode));
+});
+
+document.getElementById('btnConnect').addEventListener('click', connectAll);
+document.getElementById('btnSync').addEventListener('click', syncAll);
+document.getElementById('btnPulse').addEventListener('click', doPulse);
+document.getElementById('btnWhirl').addEventListener('click', doWhirl);
+document.getElementById('btnReset').addEventListener('click', resetAll);
+
+// ─── TASTATUR ──────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'c' || e.key === 'C') connectAll();
+  if (e.key === 's' || e.key === 'S') syncAll();
+  if (e.key === 'p' || e.key === 'P') doPulse();
+  if (e.key === 'w' || e.key === 'W') doWhirl();
+  if (e.key === 'x' || e.key === 'X') resetAll();
+  if (e.key === '1') setMode('DA');
+  if (e.key === '2') setMode('NE');
+  if (e.key === '3') setMode('BEN');
+  if (e.key === '4') setMode('DOCH');
+  if (e.key === '5') setMode('NEIN');
+  if (e.key === '6') setMode('SCHWEBE');
+});
+
+// ─── INIT ──────────────────────────────────────────────────────
+setMode('NE');
+log('⌨️  c=CONNECT  s=SYNC  p=PULSE  w=WHIRL  x=RESET');
+log('⌨️  1=DA  2=NE  3=BEN  4=DOCH  5=NEIN  6=SCHWEBE');
+log('🌀 SHOW.live · MAGNETO‑MECHANIK · RANG · bereit');
+</script>
+
+</body>
+</html>
