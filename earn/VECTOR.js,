@@ -1,0 +1,49 @@
+// VECTOR.js
+// Voller VECTOR‑Support für dein System
+
+// 1. QI = Reinheit des Tatbestands
+function QI(rolle, ort, home) {
+    return rolle + ort + home;
+}
+
+// 2. IQQ = Reinheit des Vorgangs
+function IQQ(suite, bildung) {
+    return suite + bildung;
+}
+
+// 3. ENGINE = Kraft, die VECTOR antreibt
+function ENGINE(qi, iqq) {
+    return qi * 0.6 + iqq * 0.4; // Gewichtung deiner Logik
+}
+
+// 4. VECTOR = Bewegung aus EARN + QI + IQQ
+function VECTOR(qi, iqq) {
+    const engine = ENGINE(qi, iqq);
+    const richtung = qi - iqq; // deine Achsenlogik (9‑Achse)
+
+    return {
+        engine,
+        richtung,
+        ausgang: engine + richtung
+    };
+}
+
+// 5. Continuum‑Zugang
+function continuum(qi, iqq) {
+    const summe = qi + iqq;
+
+    if (summe > 20) return "Seidene Pfaden – Continuum geöffnet";
+    if (summe > 10) return "Continuum geöffnet";
+    if (summe > 0)  return "Continuum möglich – aber unsicher";
+    if (summe === 0) return "Stillstand – keine Bewegung";
+    return "nochance.vector – Zugang gesperrt";
+}
+
+// Export
+module.exports = {
+    QI,
+    IQQ,
+    ENGINE,
+    VECTOR,
+    continuum
+};

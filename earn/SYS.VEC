@@ -1,0 +1,229 @@
+// ============================================================
+// VECTOR SYSTEM · SYSTEMISCH AKLIMATISIERT
+// ============================================================
+
+export const VECTOR_SYSTEM = {
+    name: 'VECTOR SYSTEM',
+    version: '1.0',
+    status: 'systemisch aklimatisiert',
+
+    // ─── 1. EARN – TATBESTAND ─────────────────────────────────
+    earn: {
+        rolle: null,      // Wer
+        ort: null,        // Wo
+        home: null,       // Woher
+        wert: 0,
+        status: 'rein'
+    },
+
+    // ─── 2. QI – REINHEIT DES TATBESTANDS ────────────────────
+    qi: {
+        wert: 50,
+        max: 100,
+        status: 'fließend',
+        berechne(rolle, ort, home) {
+            return rolle + ort + home;
+        }
+    },
+
+    // ─── 3. IQQ – REINHEIT DES VORGANGS ──────────────────────
+    iqq: {
+        wert: 0.50,
+        status: 'aktiv',
+        berechne(suite, bildung) {
+            return suite + bildung;
+        }
+    },
+
+    // ─── 4. DIE 6 VEKTOREN ────────────────────────────────────
+    vektoren: {
+        tiefe: {
+            name: 'Tiefe',
+            symbol: '⬇',
+            wert: 0.5,
+            funktion: 'Scan · Erkundung',
+            berechne(qi, iqq) {
+                const trieb = qi - iqq;
+                const engine = (qi * 0.6) + (iqq * 0.4);
+                return (trieb + engine) / 2;
+            }
+        },
+        energie: {
+            name: 'Energie',
+            symbol: '⚡',
+            wert: 0.5,
+            funktion: 'Pumpe · Aufladung',
+            berechne(qi, iqq) {
+                return (qi * 0.6) + (iqq * 0.4);
+            }
+        },
+        flow: {
+            name: 'Flow',
+            symbol: '～',
+            wert: 0.5,
+            funktion: 'Bewegung · Kontinuität',
+            berechne(qi, iqq) {
+                const engine = (qi * 0.6) + (iqq * 0.4);
+                const flow = Math.min(1, Math.max(0, engine / 100));
+                return flow;
+            }
+        },
+        pover: {
+            name: 'Pover',
+            symbol: '💪',
+            wert: 0.5,
+            funktion: 'Druck · Intensität',
+            berechne(qi, iqq) {
+                return ((qi * qi) + (iqq * iqq)) / 9;
+            }
+        },
+        schlag: {
+            name: 'Schlag',
+            symbol: '💥',
+            wert: 0.5,
+            funktion: 'Impuls · Aktivierung',
+            berechne(qi, iqq) {
+                return (qi * iqq) / 9;
+            }
+        },
+        ankunft: {
+            name: 'Ankunft',
+            symbol: '🏁',
+            wert: 0.5,
+            funktion: 'Ziel · Vollendung',
+            berechne(qi, iqq) {
+                const energie = (qi * 0.6) + (iqq * 0.4);
+                const pover = ((qi * qi) + (iqq * iqq)) / 9;
+                const schlag = (qi * iqq) / 9;
+                return (qi + iqq + energie + pover + schlag) / 9;
+            }
+        }
+    },
+
+    // ─── 5. CONTINUUM_BRIDGE ──────────────────────────────────
+    continuum: {
+        status: 'offen',
+        zugang: 'privat',
+        schwellwert: 20,
+
+        prüfen(qi, iqq) {
+            const summe = qi + iqq;
+            if (summe > 20) return 'Seidene Pfaden – Continuum geöffnet';
+            if (summe > 10) return 'Continuum geöffnet';
+            if (summe > 0) return 'Continuum möglich – aber unsicher';
+            if (summe === 0) return 'Stillstand – keine Bewegung';
+            return 'nochance.vector – Zugang gesperrt';
+        }
+    },
+
+    // ─── 6. MIND – ABSORPTION ──────────────────────────────────
+    mind: {
+        qi: 50,
+        iqq: 0.50,
+        flow: 0.50,
+        stabilität: 0.50,
+
+        absorb(vektoren) {
+            const sum = Object.values(vektoren).reduce((a, b) => a + b, 0);
+            this.qi = Math.min(100, this.qi + sum * 2);
+            this.iqq = Math.min(1, this.iqq + sum * 0.01);
+            this.flow = Math.min(1, this.flow + sum * 0.02);
+            this.stabilität = 1 - Math.abs(this.flow - this.iqq);
+            return this.status();
+        },
+
+        status() {
+            return {
+                qi: this.qi,
+                iqq: this.iqq,
+                flow: this.flow,
+                stabilität: this.stabilität
+            };
+        }
+    }
+};
+
+// ─── SYSTEMISCHE METHODEN ─────────────────────────────────────
+
+// EARN setzen (Tatbestand)
+VECTOR_SYSTEM.setzeEarn = function(rolle, ort, home) {
+    this.earn.rolle = rolle;
+    this.earn.ort = ort;
+    this.earn.home = home;
+    this.earn.wert = rolle + ort + home;
+    this.qi.wert = this.qi.berechne(rolle, ort, home);
+    this.log(`📦 EARN: ${rolle} @ ${ort} (${home})`);
+    return this.earn;
+};
+
+// IQQ setzen (Vorgang)
+VECTOR_SYSTEM.setzeIQQ = function(suite, bildung) {
+    this.iqq.wert = this.iqq.berechne(suite, bildung);
+    this.log(`🧠 IQQ: ${suite} + ${bildung} = ${this.iqq.wert.toFixed(2)}`);
+    return this.iqq;
+};
+
+// Alle Vektoren aktualisieren
+VECTOR_SYSTEM.updateVektoren = function() {
+    const qi = this.qi.wert / 100;
+    const iqq = this.iqq.wert;
+
+    for (const [name, v] of Object.entries(this.vektoren)) {
+        v.wert = Math.min(1, Math.max(0, v.berechne(qi, iqq)));
+    }
+
+    // Mind absorbiert
+    const vektorWerte = Object.fromEntries(
+        Object.entries(this.vektoren).map(([k, v]) => [k, v.wert])
+    );
+    this.mind.absorb(vektorWerte);
+
+    // Continuum prüfen
+    const zugang = this.continuum.prüfen(this.qi.wert, this.iqq.wert * 100);
+    this.continuum.status = zugang;
+
+    this.log(`🔄 Vektoren aktualisiert · Continuum: ${zugang}`);
+    return this;
+};
+
+// Brücke – Verbindung zu anderen Systemen
+VECTOR_SYSTEM.brücke = {
+    verbindungen: [],
+    status: 'offen',
+
+    verbinden(ziel, vektor) {
+        this.verbindungen.push({
+            ziel: ziel,
+            vektor: vektor,
+            zeit: new Date().toISOString()
+        });
+        VECTOR_SYSTEM.log(`🌉 Brücke: ${vektor} → ${ziel}`);
+        return this.verbindungen;
+    }
+};
+
+// LOG
+VECTOR_SYSTEM.log = function(entry) {
+    const zeit = new Date().toISOString();
+    console.log(`[VECTOR SYSTEM] ${entry}`);
+};
+
+// STATUS
+VECTOR_SYSTEM.status = function() {
+    const vektorWerte = Object.fromEntries(
+        Object.entries(this.vektoren).map(([k, v]) => [k, v.wert])
+    );
+
+    return {
+        earn: this.earn,
+        qi: this.qi.wert,
+        iqq: this.iqq.wert,
+        vektoren: vektorWerte,
+        mind: this.mind.status(),
+        continuum: this.continuum.status,
+        brücke: this.brücke.verbindungen.length
+    };
+};
+
+// ─── EXPORT ──────────────────────────────────────────────────
+export { VECTOR_SYSTEM };

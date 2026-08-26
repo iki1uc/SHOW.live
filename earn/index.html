@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ VECTOR SYSTEM · SYSTEMISCH AKLIMATISIERT</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            background: #0a0a12;
+            color: #0ff;
+            font-family: 'Consolas', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        #system {
+            background: #0e0e1a;
+            border: 2px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h1 { color: #ffd700; font-size: 28px; letter-spacing: 4px; }
+        .header .sub { color: #666; font-size: 11px; }
+
+        .earn-qi-iqq {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .box {
+            background: #0a0a12;
+            border: 1px solid #1a1a2a;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        .box .label { color: #666; font-size: 8px; text-transform: uppercase; }
+        .box .value { font-size: 18px; font-weight: bold; }
+        .box.earn .value { color: #ffd700; }
+        .box.qi .value { color: #4a7cff; }
+        .box.iqq .value { color: #4f4; }
+
+        .vektor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+        .vektor {
+            background: #0a0a12;
+            border: 1px solid #1a1a2a;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+        }
+        .vektor .symbol { font-size: 20px; display: block; }
+        .vektor .name { color: #4f4; font-size: 10px; }
+        .vektor .wert { color: #ffd700; font-size: 14px; font-weight: bold; }
+
+        .continuum-status {
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .continuum-status.offen { background: rgba(0, 255, 0, 0.05); color: #4f4; border: 1px solid #4f4; }
+        .continuum-status.gesperrt { background: rgba(255, 0, 0, 0.05); color: #f44; border: 1px solid #f44; }
+        .continuum-status.unsicher { background: rgba(255, 255, 0, 0.05); color: #ff4; border: 1px solid #ff4; }
+
+        .mind-status {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 4px;
+            font-size: 8px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .mind-status .wert { color: #0ff; }
+
+        input {
+            background: #111;
+            color: #0ff;
+            border: 1px solid #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 10px;
+            width: 60px;
+        }
+        button {
+            background: #111;
+            color: #0ff;
+            border: 1px solid #333;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 9px;
+            transition: all 0.3s;
+        }
+        button:hover { border-color: #ffd700; background: #1a1a2a; }
+
+        #log {
+            background: #06060a;
+            border-radius: 6px;
+            padding: 8px;
+            max-height: 80px;
+            overflow-y: auto;
+            font-size: 7px;
+            color: #6a6a8a;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+        #log .entry { padding: 1px 0; border-bottom: 1px solid #0a0a12; }
+
+        .footer {
+            font-size: 7px;
+            color: #333;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div id="system">
+    <div class="header">
+        <h1>⚡ VECTOR SYSTEM</h1>
+        <div class="sub">systemisch aklimatisiert · EARN · QI · IQQ · 6 Vektoren</div>
+    </div>
+
+    <!-- EARN · QI · IQQ -->
+    <div class="earn-qi-iqq">
+        <div class="box earn">
+            <div class="label">📦 EARN · Tatbestand</div>
+            <div class="value" id="earn-wert">0</div>
+        </div>
+        <div class="box qi">
+            <div class="label">🌊 QI · Reinheit</div>
+            <div class="value" id="qi-wert">50</div>
+        </div>
+        <div class="box iqq">
+            <div class="label">🧠 IQQ · Vorgang</div>
+            <div class="value" id="iqq-wert">0.50</div>
+        </div>
+    </div>
+
+    <!-- Eingabe -->
+    <div class="input-group">
+        <span>Rolle:</span><input id="rolle" value="10" size="4">
+        <span>Ort:</span><input id="ort" value="8" size="4">
+        <span>Home:</span><input id="home" value="6" size="4">
+        <button id="btn-earn">📦 EARN setzen</button>
+    </div>
+    <div class="input-group">
+        <span>Suite:</span><input id="suite" value="0.3" size="4">
+        <span>Bildung:</span><input id="bildung" value="0.2" size="4">
+        <button id="btn-iqq">🧠 IQQ setzen</button>
+    </div>
+
+    <!-- CONTINUUM STATUS -->
+    <div id="continuum-display" class="continuum-status offen">🌐 CONTINUUM · offen</div>
+
+    <!-- 6 VEKTOREN -->
+    <div class="vektor-grid" id="vektor-grid">
+        <div class="vektor"><span class="symbol">⬇</span><div class="name">TIEFE</div><div class="wert" id="tiefe-wert">0.50</div></div>
+        <div class="vektor"><span class="symbol">⚡</span><div class="name">ENERGIE</div><div class="wert" id="energie-wert">0.50</div></div>
+        <div class="vektor"><span class="symbol">～</span><div class="name">FLOW</div><div class="wert" id="flow-wert">0.50</div></div>
+        <div class="vektor"><span class="symbol">💪</span><div class="name">POVER</div><div class="wert" id="pover-wert">0.50</div></div>
+        <div class="vektor"><span class="symbol">💥</span><div class="name">SCHLAG</div><div class="wert" id="schlag-wert">0.50</div></div>
+        <div class="vektor"><span class="symbol">🏁</span><div class="name">ANKUNFT</div><div class="wert" id="ankunft-wert">0.50</div></div>
+    </div>
+
+    <!-- MIND STATUS -->
+    <div class="mind-status">
+        <div>QI: <span class="wert" id="mind-qi">50</span></div>
+        <div>IQQ: <span class="wert" id="mind-iqq">0.50</span></div>
+        <div>Flow: <span class="wert" id="mind-flow">0.50</span></div>
+        <div>Stabilität: <span class="wert" id="mind-stabil">0.50</span></div>
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button id="btn-update">🔄 UPDATE</button>
+        <button id="btn-bridge">🌉 BRÜCKE</button>
+        <button id="btn-reset">⟲ RESET</button>
+        <span id="bridge-status" style="font-size:9px;color:#666;">Brücke: 0</span>
+    </div>
+
+    <div id="log">
+        <div class="entry">[INIT] ⚡ VECTOR SYSTEM · systemisch aklimatisiert</div>
+        <div class="entry">[INIT] 📦 EARN · 🌊 QI · 🧠 IQQ · 6 Vektoren</div>
+    </div>
+
+    <div class="footer">⚡ VECTOR SYSTEM · systemisch aklimatisiert · EARN → QI → IQQ → VECTOR → CONTINUUM</div>
+</div>
+
+<script type="module">
+// ============================================================
+// VECTOR SYSTEM · EINZIGES MODUL-SCRIPT
+// ============================================================
+
+import { VECTOR_SYSTEM } from './vector-system.js';
+
+// ─── DOM ──────────────────────────────────────────────────────
+const logDiv = document.getElementById('log');
+const vektorIds = ['tiefe', 'energie', 'flow', 'pover', 'schlag', 'ankunft'];
+const vektorElements = {};
+vektorIds.forEach(id => {
+    vektorElements[id] = document.getElementById(`${id}-wert`);
+});
+
+const earnWert = document.getElementById('earn-wert');
+const qiWert = document.getElementById('qi-wert');
+const iqqWert = document.getElementById('iqq-wert');
+const continuumDisplay = document.getElementById('continuum-display');
+const bridgeStatus = document.getElementById('bridge-status');
+
+// Mind
+const mindQi = document.getElementById('mind-qi');
+const mindIqq = document.getElementById('mind-iqq');
+const mindFlow = document.getElementById('mind-flow');
+const mindStabil = document.getElementById('mind-stabil');
+
+// ─── LOG ──────────────────────────────────────────────────────
+function log(msg) {
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    const zeit = new Date().toLocaleTimeString();
+    entry.innerHTML = `<span style="color:#444;">[${zeit}]</span> ${msg}`;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+    while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
+}
+
+// ─── UPDATE UI ──────────────────────────────────────────────
+function updateUI() {
+    const status = VECTOR_SYSTEM.status();
+
+    // EARN
+    earnWert.textContent = status.earn.wert || 0;
+    qiWert.textContent = Math.round(status.qi);
+    iqqWert.textContent = status.iqq.toFixed(2);
+
+    // Vektoren
+    vektorIds.forEach(id => {
+        vektorElements[id].textContent = status.vektoren[id].toFixed(3);
+    });
+
+    // Continuum
+    const cont = status.continuum;
+    continuumDisplay.textContent = `🌐 CONTINUUM · ${cont}`;
+    continuumDisplay.className = 'continuum-status';
+    if (cont.includes('geöffnet') && !cont.includes('unsicher')) {
+        continuumDisplay.classList.add('offen');
+    } else if (cont.includes('gesperrt')) {
+        continuumDisplay.classList.add('gesperrt');
+    } else {
+        continuumDisplay.classList.add('unsicher');
+    }
+
+    // Mind
+    mindQi.textContent = Math.round(status.mind.qi);
+    mindIqq.textContent = status.mind.iqq.toFixed(2);
+    mindFlow.textContent = status.mind.flow.toFixed(2);
+    mindStabil.textContent = status.mind.stabilität.toFixed(2);
+
+    // Brücke
+    bridgeStatus.textContent = `Brücke: ${status.brücke}`;
+}
+
+// ─── EARN SETZEN ─────────────────────────────────────────────
+function setEarn() {
+    const rolle = parseInt(document.getElementById('rolle').value) || 0;
+    const ort = parseInt(document.getElementById('ort').value) || 0;
+    const home = parseInt(document.getElementById('home').value) || 0;
+    VECTOR_SYSTEM.setzeEarn(rolle, ort, home);
+    VECTOR_SYSTEM.updateVektoren();
+    updateUI();
+    log(`📦 EARN: ${rolle} + ${ort} + ${home} = ${rolle+ort+home}`);
+}
+
+// ─── IQQ SETZEN ──────────────────────────────────────────────
+function setIQQ() {
+    const suite = parseFloat(document.getElementById('suite').value) || 0;
+    const bildung = parseFloat(document.getElementById('bildung').value) || 0;
+    VECTOR_SYSTEM.setzeIQQ(suite, bildung);
+    VECTOR_SYSTEM.updateVektoren();
+    updateUI();
+    log(`🧠 IQQ: ${suite} + ${bildung} = ${(suite+bildung).toFixed(2)}`);
+}
+
+// ─── BRÜCKE ──────────────────────────────────────────────────
+function bridge() {
+    const ziele = ['Continuum', 'DeepSpaceNine', 'OS', 'BOOT', '243', 'SUITE'];
+    const ziel = ziele[Math.floor(Math.random() * ziele.length)];
+    const vektor = vektorIds[Math.floor(Math.random() * vektorIds.length)];
+    VECTOR_SYSTEM.brücke.verbinden(ziel, vektor);
+    updateUI();
+    log(`🌉 Brücke: ${vektor} → ${ziel}`);
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────
+document.getElementById('btn-earn').addEventListener('click', setEarn);
+document.getElementById('btn-iqq').addEventListener('click', setIQQ);
+document.getElementById('btn-update').addEventListener('click', () => {
+    VECTOR_SYSTEM.updateVektoren();
+    updateUI();
+    log('🔄 Vektoren aktualisiert');
+});
+document.getElementById('btn-bridge').addEventListener('click', bridge);
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+    VECTOR_SYSTEM.setzeEarn(0, 0, 0);
+    VECTOR_SYSTEM.setzeIQQ(0.5, 0.5);
+    VECTOR_SYSTEM.qi.wert = 50;
+    VECTOR_SYSTEM.iqq.wert = 0.5;
+    VECTOR_SYSTEM.mind.qi = 50;
+    VECTOR_SYSTEM.mind.iqq = 0.5;
+    VECTOR_SYSTEM.mind.flow = 0.5;
+    VECTOR_SYSTEM.mind.stabilität = 0.5;
+    VECTOR_SYSTEM.brücke.verbindungen = [];
+    VECTOR_SYSTEM.updateVektoren();
+    updateUI();
+    log('⟲ RESET: System zurückgesetzt');
+});
+
+// Enter-Tasten
+document.getElementById('rolle').addEventListener('keydown', (e) => { if (e.key === 'Enter') setEarn(); });
+document.getElementById('ort').addEventListener('keydown', (e) => { if (e.key === 'Enter') setEarn(); });
+document.getElementById('home').addEventListener('keydown', (e) => { if (e.key === 'Enter') setEarn(); });
+document.getElementById('suite').addEventListener('keydown', (e) => { if (e.key === 'Enter') setIQQ(); });
+document.getElementById('bildung').addEventListener('keydown', (e) => { if (e.key === 'Enter') setIQQ(); });
+
+// ─── AUTO-UPDATE ─────────────────────────────────────────────
+setInterval(() => {
+    VECTOR_SYSTEM.updateVektoren();
+    updateUI();
+}, 3000);
+
+// ─── INIT ────────────────────────────────────────────────────
+log('⚡ VECTOR SYSTEM: systemisch aklimatisiert');
+log('📦 EARN → 🌊 QI → 🧠 IQQ → 6 Vektoren → 🌐 Continuum');
+
+// Initial setzen
+VECTOR_SYSTEM.setzeEarn(10, 8, 6);
+VECTOR_SYSTEM.setzeIQQ(0.3, 0.2);
+VECTOR_SYSTEM.updateVektoren();
+updateUI();
+
+console.log('⚡ VECTOR SYSTEM · systemisch aklimatisiert');
+console.log('📦 EARN + QI + IQQ = VECTOR = Continuum');
+</script>
+
+</body>
+</html>
