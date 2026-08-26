@@ -1,10 +1,6 @@
-// ============================================================
-// NC.respo · Master-Responder
-// ============================================================
-
-import { NChoch3 } from "./NChoch3/index.js";
-import { NChoch9 } from "./NChoch9/index.js";
-import { NChoch81 } from "./NChoch81/index.js";
+import { NChoch3 } from "./NChoch3.js";
+import { NChoch9 } from "./NChoch9.js";
+import { NChoch81 } from "./NChoch81.js";
 
 export const NCRESPO = {
 
@@ -12,9 +8,9 @@ export const NCRESPO = {
 
     respo(etage = 3, info = {}) {
 
-        if (etage === 3) return NChoch3.respo(info);
-        if (etage === 9) return NChoch9.respo(info);
-        if (etage === 81) return NChoch81.respo(info);
+        if (etage === 3) return NChoch3(info);
+        if (etage === 9) return NChoch9(info);
+        if (etage === 81) return NChoch81(info);
 
         return {
             NC: this.NC,
