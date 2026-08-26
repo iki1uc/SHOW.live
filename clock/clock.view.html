@@ -1,0 +1,8 @@
+<script type="module">
+import { RUN } from "./clock.run.js";
+
+const out = RUN(0, 1.0);
+document.getElementById("clock-view").innerText = JSON.stringify(out, null, 2);
+</script>
+
+<pre id="clock-view"></pre>
