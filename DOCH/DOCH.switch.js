@@ -1,31 +1,53 @@
 import DOO from '../DOO/DOO.js';
 import DOOR from '../DOOR/DOOR.js';
+import SCHWEBE from "./schwebe.js";
 
 export const DOCH_SWITCH = {
 
-    mode: "NE",
+    engineMode: "NE",
+    publicMode: "ja",
 
     matrix: {
-        DA: { doo: true,  door: true,  doch: true },
-        NE: { doo: false, door: false, doch: true },
-        BEN:{ doo: true,  door: false, doch: true }
+        DA:  { doo: true,  door: true,  doch: true },
+        NE:  { doo: false, door: false, doch: true },
+        BEN: { doo: true,  door: false, doch: true }
     },
 
-    set(mode) {
-        this.mode = mode;
+    // ENGINE-MODUS
+    setEngine(mode) {
+        this.engineMode = mode;
         const m = this.matrix[mode];
 
-        // DOO Engine
         if (m.doo) DOO.activate();
         else DOO.deactivate();
 
-        // DOOR Gateway
         if (m.door) DOOR.openDoor();
         else DOOR.closeDoor();
 
         return {
             status: "ok",
-            mode: this.mode,
+            engineMode: this.engineMode,
+            doo: DOO.getStatus(),
+            door: DOOR.getStatus()
+        };
+    },
+
+    // PUBLIC-MODUS (SCHWEBE)
+    setPublic(mode) {
+        this.publicMode = mode;
+
+        if (mode === "ja") return SCHWEBE.enable();
+        if (mode === "nein") return SCHWEBE.disable();
+
+        return { status: "error", message: "❌ Unbekannter Public‑Mode" };
+    },
+
+    // GESAMTSTATUS
+    getStatus() {
+        return {
+            engine: this.engineMode,
+            public: this.publicMode,
+            schwebestatus: SCHWEBE.getStatus(),
             doo: DOO.getStatus(),
             door: DOOR.getStatus()
         };
