@@ -44,6 +44,17 @@
       50%  { text-shadow: 0 0 18px #f33; }
       100% { text-shadow: 0 0 4px #f33; }
     }
+<button onclick="setDA()">DA</button>
+<button onclick="setNE()">NE</button>
+<button onclick="setBEN()">BEN</button>
+
+<script type="module">
+import DOCH from './DOCH.js';
+
+window.setDA = () => console.log(DOCH.switch("DA"));
+window.setNE = () => console.log(DOCH.switch("NE"));
+window.setBEN = () => console.log(DOCH.switch("BEN"));
+</script>
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
