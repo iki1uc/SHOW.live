@@ -1,0 +1,20 @@
+export const NC_WORLD = {
+
+    NC: "NC_WORLD_0x01",
+
+    init() {
+        return {
+            NC: this.NC,
+            status: "world-online",
+            stamp: new Date().toISOString()
+        };
+    },
+
+    load(module) {
+        return {
+            NC: this.NC,
+            loaded: module,
+            stamp: new Date().toISOString()
+        };
+    }
+};
