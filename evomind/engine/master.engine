@@ -1,0 +1,19 @@
+// master.engine — Hauptsteuerung für evoMIND
+
+export const MASTER = {
+  stamp: Date.now(),
+  mode: "MASTER-ENGINE",
+  version: "1.0",
+
+  start() {
+    return {
+      qi: QI.start(),
+      iqq: IQQ.start(),
+      geo: GEO.start(),
+      cube: CUBE_MIND.start(),
+      matrix: MATRIX9x9.build(),
+      stamp: Date.now(),
+      status: "MASTER-ENGINE-OK"
+    };
+  }
+};

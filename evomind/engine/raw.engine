@@ -1,0 +1,19 @@
+// raw.engine — Rohdaten / Basiswerte / Primitive
+
+export const RAW = {
+  qi(r, c) {
+    return r * 9 + c;
+  },
+
+  iqq(r, c) {
+    return this.qi(r, c) % 3;
+  },
+
+  octa(qi) {
+    return qi % 8;
+  },
+
+  stamp() {
+    return Date.now();
+  }
+};

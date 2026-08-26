@@ -1,0 +1,15 @@
+// room.suite — Raum-Intelligenz für GEO / CONNECT
+
+export const ROOM = {
+  id: "ROOM-SUITE",
+  stamp: Date.now(),
+
+  scan() {
+    return CONNECT.scanRoom("GEO-ROOM");
+  },
+
+  map(pipe) {
+    return CONNECT.mapPipe(pipe);
+  }
+};
+

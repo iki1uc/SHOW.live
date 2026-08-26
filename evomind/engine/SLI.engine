@@ -1,0 +1,18 @@
+// SLI.engine – Slide Intelligence
+
+export const SLI = {
+    level: 4,
+
+    set(level) {
+        this.level = level;
+        return { level, stamp: Date.now() };
+    },
+
+    flow(qi) {
+        return {
+            qi,
+            slide: qi % this.level,
+            stamp: Date.now()
+        };
+    }
+};
