@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>MXU · CH</title>
+<style>
+body{background:#000;color:#0ff;font-family:monospace;padding:20px;}
+.box{border:1px solid #0ff;padding:20px;margin-bottom:20px;}
+h2{margin-top:0;}
+</style>
+</head>
+
+<body>
+
+<h2>MXU · CH</h2>
+
+<div class="box">
+  <div id="mxu_ch">MXU CH geladen…</div>
+</div>
+
+<script type="module">
+import { MXU_CH } from "./mxu_ch.js";
+import { SLI } from "../sync/SLI.js";
+
+const out = MXU_CH.init();
+document.getElementById("mxu_ch").innerText = JSON.stringify(out, null, 2);
+
+SLI.attach(MXU_CH);
+</script>
+
+</body>
+</html>
+

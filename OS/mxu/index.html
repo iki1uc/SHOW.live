@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MXU Channel</title>
+</head>
+
+<body>
+
+<h1>MXU CHANNEL</h1>
+<div id="channel"></div>
+
+<script type="module">
+  import * as MXU from "./mxu.js";
+  import { AXINXA } from "./AXINXA.js";
+  import { SLI } from "../RESPO/sync/SLI.js";   // SLI = RESPO-Link-Sync (Blau)
+
+  MXU.channel("channel");
+  AXINXA.attach(MXU);
+  SLI.attach(MXU);                             // SLI aktiv
+</script>
+
+</body>
+</html>
+
