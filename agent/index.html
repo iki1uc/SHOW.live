@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 WRAIGHT · AGENT · COACH · ULTIMATE</title>
+
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  background: #0a0a0f;
+  color: #c8d0d0;
+  font-family: 'Consolas', 'Courier New', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 50%, #0a0a1a, #000000);
+  transition: background 0.8s ease;
+}
+.container {
+  max-width: 1000px;
+  width: 100%;
+  background: rgba(10,10,20,0.3);
+  border: 1px solid rgba(0,255,136,0.03);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 100px rgba(0,0,0,0.8);
+}
+.header {
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  margin-bottom: 16px;
+}
+.header h1 {
+  font-size: 28px;
+  background: linear-gradient(90deg, #00ff88, #ff66ff, #ffaa00, #00ccff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+}
+.header .sub {
+  color: #445555;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+.header .sub .agent { color: #00ff88; }
+.header .sub .coach { color: #ff66ff; }
+
+.agent-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width:700px){ .agent-panel { grid-template-columns:1fr; } }
+
+.agent-card {
+  background: rgba(10,10,20,0.2);
+  border: 1px solid rgba(255,255,255,0.02);
+  border-radius: 12px;
+  padding: 14px;
+  transition: all 0.3s;
+}
+.agent-card .title {
+  color: #668888;
+  font-size: 9px;
+  letter-spacing: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+.agent-card .value {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: monospace;
+  margin: 4px 0;
+}
+.agent-card .desc {
+  color: #445555;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: rgba(0,0,0,0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(0,255,136,0.02);
+  overflow: hidden;
+}
+#coachCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chat-area {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.02);
+  min-height: 60px;
+  font-size: 12px;
+  color: #88ddbb;
+  line-height: 1.6;
+}
+.chat-area .agent-msg { color: #00ff88; }
+.chat-area .user-msg { color: #ffaa00; }
+.chat-area .system-msg { color: #445555; }
+
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+.controls button {
+  background: rgba(20,35,35,0.2);
+  color: #668888;
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 5px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  transition: all 0.3s;
+}
+.controls button:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
+.controls button.active { background: rgba(40,80,70,0.06); color: #00ff88; }
+.controls button.coach { color: #00ff88; border-color: rgba(0,255,136,0.05); }
+.controls button.agent { color: #ff66ff; border-color: rgba(255,102,255,0.05); }
+
+.input-area {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.input-area input {
+  flex: 1;
+  background: rgba(10,10,20,0.3);
+  color: #c8d0d0;
+  border: 1px solid rgba(255,255,255,0.02);
+  border-radius: 18px;
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 10px;
+  outline: none;
+}
+.input-area input:focus { border-color: #00ff8844; }
+.input-area button {
+  background: rgba(20,35,35,0.2);
+  color: #668888;
+  border: 1px solid rgba(255,255,255,0.02);
+  padding: 5px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  transition: all 0.3s;
+}
+.input-area button:hover { background: rgba(40,80,70,0.08); color: #aaeedd; }
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 10px;
+  margin-top: 8px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 6px;
+  font-size: 7px;
+  color: #445555;
+  border: 1px solid rgba(255,255,255,0.01);
+}
+.status-bar .agent { color: #00ff88; }
+
+.footer {
+  text-align: center;
+  margin-top: 8px;
+  color: #222;
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+.footer span { color: #00ff88; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+  <h1>🧠 WRAIGHT · AGENT · COACH</h1>
+  <div class="sub"><span class="agent">AGENT</span> · <span class="coach">COACH</span> · SOCCER EDITION</div>
+</div>
+
+<div class="agent-panel">
+  <div class="agent-card">
+    <div class="title">🌀 AURA</div>
+    <div class="value" id="auraValue" style="color:#00ccff;">—</div>
+    <div class="desc">Die Energie, die den Coach umgibt</div>
+  </div>
+  <div class="agent-card">
+    <div class="title">👁️ SENSE</div>
+    <div class="value" id="senseValue" style="color:#ffaa00;">—</div>
+    <div class="desc">Was der Coach wahrnimmt</div>
+  </div>
+  <div class="agent-card">
+    <div class="title">🧞 DJINN</div>
+    <div class="value" id="djinnValue" style="color:#ff66ff;">—</div>
+    <div class="desc">Der Geist – versiegelt oder frei</div>
+  </div>
+  <div class="agent-card">
+    <div class="title">♾️ CONTÍNIUM</div>
+    <div class="value" id="continiumValue" style="color:#00ff88;">—</div>
+    <div class="desc">Die Kontinuität des Moments</div>
+  </div>
+  <div class="agent-card">
+    <div class="title">🎯 INTENT</div>
+    <div class="value" id="intentValue" style="color:#ff4444;">—</div>
+    <div class="desc">Die Absicht hinter der Handlung</div>
+  </div>
+  <div class="agent-card">
+    <div class="title">✅ WRAIGHT</div>
+    <div class="value" id="wraightValue" style="color:#00ff88;">—</div>
+    <div class="desc">Erlaubnis – der Coach gibt grünes Licht</div>
+  </div>
+</div>
+
+<div class="canvas-wrap">
+  <canvas id="coachCanvas"></canvas>
+</div>
+
+<div class="chat-area" id="chatArea">
+  <span class="system-msg">🧠 WRAIGHT · Agent bereit</span><br>
+  <span class="agent-msg">👋 Hallo! Ich bin dein Coach. Stelle mir eine Frage oder sag mir, was dich bewegt.</span>
+</div>
+
+<div class="input-area">
+  <input type="text" id="userInput" placeholder="Frage an den Coach..." />
+  <button id="btnSend">📨 SENDEN</button>
+</div>
+
+<div class="controls">
+  <button class="active coach" id="btnStart">▶ START</button>
+  <button class="agent" id="btnAgent">🧠 AGENT</button>
+  <button class="coach" id="btnCoach">⚽ COACH</button>
+  <button id="btnProof">🔮 PROOF</button>
+  <button id="btnReset">⟲ RESET</button>
+</div>
+
+<div class="status-bar">
+  <span class="agent">🧠 WRAIGHT: <span id="statusText">aktiv</span></span>
+  <span>⚽ SOCCER: <span id="soccerStatus">bereit</span></span>
+  <span>⏱️ <span id="timeStatus">00:00</span></span>
+</div>
+
+<div class="footer">
+  <span>🧠</span> WRAIGHT · AGENT · COACH · SOCCER · <span>wieimmer4u</span>
+</div>
+
+</div>
+
+<script>
+// ============================================================
+// WRAIGHT · AGENT · COACH · ULTIMATE
+// ============================================================
+
+// ===== CANVAS =====
+const canvas = document.getElementById('coachCanvas');
+const ctx = canvas.getContext('2d');
+let running = true;
+let time = 0;
+let chatHistory = [];
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 600;
+  canvas.height = rect.height || (rect.width * 9/16) || 340;
+}
+window.addEventListener('resize', resizeCanvas);
+
+// ===== WRAIGHT KERNEL =====
+const WRAIGHT = {
+  aura: 0,
+  sense: 'neutral',
+  djinn: { sealed: true, name: 'Ruhe' },
+  continium: 0,
+  intent: 'beobachten',
+  wraight: false,
+  coach: null
+};
+
+// ===== AGENT-PERSÖNLICHKEIT =====
+const AGENT = {
+  name: 'WRAIGHT',
+  mood: 'neutral',
+  responses: [
+    'Ich sehe, was du meinst. Die Aura ist klar.',
+    'Der Djinn ruht – die Stabilität ist gegeben.',
+    'Das Contínium fließt – alles ist in Bewegung.',
+    'Deine Absicht ist stark – der Weg ist offen.',
+    'WRAIGHT gibt grünes Licht – du kannst gehen.',
+    'Die Sense erkennt eine Veränderung – sei achtsam.',
+    'Der Coach sieht dich – du bist nicht allein.',
+    'Der Geist ist versiegelt – Ruhe kehrt ein.',
+    'Das Spiel beginnt – der Ball rollt.',
+    'Du bist im Flow – bleib dran.'
+  ],
+  soccerResponses: [
+    '⚽ Der Ball ist rund – das Spiel hat 90 Minuten.',
+    '⚽ Die Mannschaft steht – der Coach gibt die Richtung vor.',
+    '⚽ Tore entscheiden – aber die Bewegung zählt.',
+    '⚽ Der Gegner ist stark – aber du bist wach.',
+    '⚽ Die 3hit90-Engine läuft – der Move ist da.'
+  ]
+};
+
+// ===== WRAIGHT UPDATE =====
+function updateWRAIGHT() {
+  // Aura pulsiert
+  WRAIGHT.aura = 50 + Math.sin(time / 2000) * 30 + Math.sin(time / 3000) * 10;
+
+  // Sense wechselt
+  const senses = ['neutral', 'klar', 'unscharf', 'fit', 'fin', 'rdy', 'ghost', 'help', 'error', 'miss'];
+  WRAIGHT.sense = senses[Math.floor((time / 3000) % senses.length)];
+
+  // Djinn
+  WRAIGHT.djinn.sealed = Math.sin(time / 5000) > 0;
+
+  // Contínium
+  WRAIGHT.continium = (time / 1000) % 100;
+
+  // Intent
+  const intents = ['beobachten', 'bewegen', 'entscheiden', 'führen', 'coachen', 'spielen', 'ruhen'];
+  WRAIGHT.intent = intents[Math.floor((time / 4000) % intents.length)];
+
+  // WRAIGHT (Erlaubnis)
+  WRAIGHT.wraight = WRAIGHT.aura > 40 && WRAIGHT.continium > 10;
+
+  // DOM
+  document.getElementById('auraValue').textContent = Math.round(WRAIGHT.aura) + '%';
+  document.getElementById('senseValue').textContent = WRAIGHT.sense;
+  document.getElementById('djinnValue').textContent = WRAIGHT.djinn.sealed ? '🔒 versiegelt' : '🔓 frei';
+  document.getElementById('continiumValue').textContent = Math.round(WRAIGHT.continium);
+  document.getElementById('intentValue').textContent = WRAIGHT.intent;
+  document.getElementById('wraightValue').textContent = WRAIGHT.wraight ? '✅ GRÜN' : '⛔ ROT';
+  document.getElementById('wraightValue').style.color = WRAIGHT.wraight ? '#00ff88' : '#ff4444';
+}
+
+// ===== RENDER CANVAS =====
+function renderCanvas() {
+  const w = canvas.width, h = canvas.height;
+  const cx = w/2, cy = h/2;
+  const maxDim = Math.min(w, h);
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Hintergrund
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, maxDim * 0.6);
+  grad.addColorStop(0, '#0a0a1a');
+  grad.addColorStop(0.5, '#050510');
+  grad.addColorStop(1, '#000000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+
+  // Aura-Ring
+  const auraRadius = maxDim * (0.15 + WRAIGHT.aura / 300);
+  ctx.shadowColor = `rgba(0,204,255,${0.1 + WRAIGHT.aura / 500})`;
+  ctx.shadowBlur = 40;
+  ctx.strokeStyle = `rgba(0,204,255,${0.05 + WRAIGHT.aura / 300})`;
+  ctx.lineWidth = 1 + WRAIGHT.aura / 60;
+  ctx.beginPath();
+  ctx.arc(cx, cy, auraRadius, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Contínium-Ringe
+  for (let i = 0; i < 5; i++) {
+    const r = maxDim * (0.08 + i * 0.04 + WRAIGHT.continium / 2000);
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = `rgba(0,255,136,${0.02 + i * 0.01})`;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // Djinn (Geist)
+  const djinnSize = maxDim * (0.03 + (WRAIGHT.djinn.sealed ? 0.01 : 0.04));
+  ctx.shadowColor = WRAIGHT.djinn.sealed ? '#ff66ff22' : '#ff66ff44';
+  ctx.shadowBlur = 30;
+  ctx.fillStyle = WRAIGHT.djinn.sealed ? 'rgba(255,102,255,0.1)' : 'rgba(255,102,255,0.3)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, djinnSize, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Intent-Linie
+  const intentAngle = time / 2000;
+  const intentDist = maxDim * 0.1;
+  const ix = cx + Math.cos(intentAngle) * intentDist;
+  const iy = cy + Math.sin(intentAngle) * intentDist;
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = '#ff444444';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(ix, iy);
+  ctx.stroke();
+
+  // WRAIGHT-Status
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = WRAIGHT.wraight ? '#00ff8844' : '#ff444444';
+  ctx.font = `${maxDim * 0.025}px monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(WRAIGHT.wraight ? '✅ WRAIGHT · GRÜN' : '⛔ WRAIGHT · ROT', cx, h - 16);
+
+  // Soccer-Ball
+  ctx.fillStyle = '#ffffff11';
+  ctx.font = `${maxDim * 0.04}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('⚽', cx + maxDim * 0.25, 10);
+
+  // Agent-Name
+  ctx.fillStyle = '#445555';
+  ctx.font = `${maxDim * 0.015}px monospace`;
+  ctx.textBaseline = 'top';
+  ctx.fillText('🧠 WRAIGHT · AGENT', 10, 10);
+}
+
+// ===== CHAT =====
+function addChatMessage(sender, msg, type = 'agent') {
+  const chat = document.getElementById('chatArea');
+  const cls = type === 'agent' ? 'agent-msg' : type === 'user' ? 'user-msg' : 'system-msg';
+  const line = document.createElement('div');
+  line.innerHTML = `<span class="${cls}">${sender}: ${msg}</span>`;
+  chat.appendChild(line);
+  chat.scrollTop = chat.scrollHeight;
+  chatHistory.push({ sender, msg, type });
+  while (chat.children.length > 20) chat.removeChild(chat.firstChild);
+}
+
+// ===== AGENT REAKTION =====
+function agentRespond(input) {
+  const isSoccer = input.toLowerCase().includes('ball') || input.toLowerCase().includes('tor') ||
+                   input.toLowerCase().includes('spiel') || input.toLowerCase().includes('soccer');
+
+  const responses = isSoccer ? AGENT.soccerResponses : AGENT.responses;
+  const response = responses[Math.floor(Math.random() * responses.length)];
+
+  // WRAIGHT reagiert auf Input
+  if (input.toLowerCase().includes('hilfe') || input.toLowerCase().includes('help')) {
+    addChatMessage('🧠 Coach', 'Ich bin hier. Sag mir, was du brauchst.', 'agent');
+  } else if (input.toLowerCase().includes('danke')) {
+    addChatMessage('🧠 Coach', 'Gerne. Ich bin für dich da.', 'agent');
+  } else if (input.toLowerCase().includes('status')) {
+    addChatMessage('🧠 Coach', `Aura: ${Math.round(WRAIGHT.aura)}% · Sense: ${WRAIGHT.sense} · WRAIGHT: ${WRAIGHT.wraight ? 'GRÜN' : 'ROT'}`, 'agent');
+  } else {
+    addChatMessage('🧠 Coach', response, 'agent');
+  }
+
+  // WRAIGHT Reaktion auf gute Fragen
+  if (WRAIGHT.wraight) {
+    setTimeout(() => {
+      addChatMessage('🧠 Coach', '✅ WRAIGHT gibt grünes Licht. Du kannst gehen.', 'agent');
+    }, 800);
+  }
+}
+
+// ===== SEND =====
+function sendMessage() {
+  const input = document.getElementById('userInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addChatMessage('👤 Du', msg, 'user');
+  input.value = '';
+  agentRespond(msg);
+}
+
+// ===== TOGGLES =====
+function toggleAgent() {
+  document.getElementById('btnAgent').classList.toggle('active');
+  addChatMessage('🧠 Coach', '🧠 Agent-Modus aktiviert. Ich höre zu.', 'agent');
+}
+
+function toggleCoach() {
+  document.getElementById('btnCoach').classList.toggle('active');
+  addChatMessage('🧠 Coach', '⚽ Coach-Modus. Das Spiel beginnt.', 'agent');
+}
+
+// ===== PROOF =====
+function showProof() {
+  const proof = document.createElement('div');
+  proof.style.cssText = `
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999; backdrop-filter: blur(20px);
+    font-family: 'Consolas', monospace;
+  `;
+  proof.innerHTML = `
+    <div style="text-align:center; padding:40px; border:1px solid rgba(0,255,136,0.1); border-radius:20px; background:rgba(10,10,20,0.6); max-width:450px;">
+      <div style="font-size:48px; color:#00ff88;">🧠</div>
+      <div style="color:#00ff88; font-size:20px; margin:12px 0; letter-spacing:4px;">WRAIGHT · AGENT · COACH</div>
+      <div style="color:#88ddbb; font-size:13px; line-height:1.8;">
+        🌊 AURA: ${Math.round(WRAIGHT.aura)}%<br>
+        👁️ SENSE: ${WRAIGHT.sense}<br>
+        🧞 DJINN: ${WRAIGHT.djinn.sealed ? '🔒 versiegelt' : '🔓 frei'}<br>
+        ♾️ CONTÍNIUM: ${Math.round(WRAIGHT.continium)}<br>
+        🎯 INTENT: ${WRAIGHT.intent}<br>
+        ✅ WRAIGHT: ${WRAIGHT.wraight ? 'GRÜN' : 'ROT'}
+      </div>
+      <button onclick="this.parentElement.parentElement.remove()" style="
+        margin-top:14px; background:rgba(20,35,35,0.2); color:#668888;
+        border:1px solid rgba(255,255,255,0.02); padding:6px 20px;
+        border-radius:18px; cursor:pointer; font-family:inherit; font-size:9px;
+      ">⏎ SCHLIESSEN</button>
+    </div>
+  `;
+  document.body.appendChild(proof);
+}
+
+// ===== RESET =====
+function resetAll() {
+  WRAIGHT.aura = 0;
+  WRAIGHT.sense = 'neutral';
+  WRAIGHT.djinn.sealed = true;
+  WRAIGHT.continium = 0;
+  WRAIGHT.intent = 'beobachten';
+  WRAIGHT.wraight = false;
+  document.getElementById('chatArea').innerHTML = `
+    <span class="system-msg">🧠 WRAIGHT · zurückgesetzt</span><br>
+    <span class="agent-msg">👋 Ich bin wieder da. Was möchtest du besprechen?</span>
+  `;
+  updateWRAIGHT();
+}
+
+// ===== UPDATE =====
+function update() {
+  if (!running) return;
+  time += 16;
+
+  updateWRAIGHT();
+  renderCanvas();
+
+  const seconds = Math.floor(time / 1000);
+  const minutes = Math.floor(seconds / 60);
+  document.getElementById('timeStatus').textContent =
+    `${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+
+  requestAnimationFrame(update);
+}
+
+// ===== CONTROLS =====
+document.getElementById('btnStart').addEventListener('click', function() {
+  running = !running;
+  this.classList.toggle('active');
+  this.textContent = running ? '▶ START' : '⏸ PAUSE';
+  document.getElementById('statusText').textContent = running ? 'aktiv' : 'pausiert';
+  if (running) update();
+});
+
+document.getElementById('btnAgent').addEventListener('click', toggleAgent);
+document.getElementById('btnCoach').addEventListener('click', toggleCoach);
+document.getElementById('btnProof').addEventListener('click', showProof);
+document.getElementById('btnReset').addEventListener('click', resetAll);
+
+document.getElementById('btnSend').addEventListener('click', sendMessage);
+document.getElementById('userInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+// ===== TASTATUR =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('btnStart').click(); }
+  if (e.key === 'a' || e.key === 'A') document.getElementById('btnAgent').click();
+  if (e.key === 'c' || e.key === 'C') document.getElementById('btnCoach').click();
+  if (e.key === 'p' || e.key === 'P') document.getElementById('btnProof').click();
+  if (e.key === 'x' || e.key === 'X') document.getElementById('btnReset').click();
+});
+
+// ===== INIT =====
+resizeCanvas();
+setTimeout(resizeCanvas, 200);
+updateWRAIGHT();
+renderCanvas();
+update();
+
+addChatMessage('🧠 Coach', '👋 Hallo! Ich bin dein Coach. Stelle mir eine Frage oder sag mir, was dich bewegt.', 'agent');
+
+console.log('🧠 WRAIGHT · AGENT · COACH · ULTIMATE');
+console.log('🌊 Aura · 👁️ Sense · 🧞 Djinn · ♾️ Contínium · 🎯 Intent · ✅ WRAIGHT');
+console.log('⌨️  Leertaste=Start  a=AGENT  c=COACH  p=PROOF  x=Reset');
+</script>
+
+</body>
+</html>
