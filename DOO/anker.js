@@ -1,7 +1,7 @@
-// P01 – API / ANKER / PASS-THROUGH
-// Public-Modul für DOO / DOOR / GEO / TMP
+// anker.js – P01 Anchor Module
+// erweitert API um Übersetzung, Stabilisierung und Mapping
 
-export const P01 = {
+export const ANKER = {
 
     state: "idle",
     anchor: false,
@@ -10,7 +10,7 @@ export const P01 = {
 
     enable() {
         this.state = "enabled";
-        return "P01 aktiviert";
+        return "ANKER aktiviert";
     },
 
     setAnchor() {
@@ -31,6 +31,28 @@ export const P01 = {
         return "🎛 Controller bereit";
     },
 
+    // API-Übersetzung
+    translateAPI(data) {
+        if (!this.transition) {
+            return "❌ Kein Übergang – API-Übersetzung blockiert";
+        }
+
+        // API-Übersetzung: neutralisieren + stabilisieren + weiterreichen
+        const translated = {
+            raw: data,
+            neutral: String(data).trim(),
+            stable: String(data).replace(/\s+/g, " "),
+            mapped: `[P01-MAP] ${data}`
+        };
+
+        return {
+            status: "ok",
+            message: "🔌 API übersetzt",
+            output: translated
+        };
+    },
+
+    // GEO/PHYSIK Mapping
     geoPhysBridge() {
         if (!this.transition) {
             this.transition = true;
@@ -40,21 +62,14 @@ export const P01 = {
         return "Mapping bereits aktiv";
     },
 
-    pass(data) {
-        if (!this.transition) {
-            return "❌ Kein Übergang – PASS blockiert";
-        }
-        return `🔌 PASS-THROUGH: ${data}`;
-    },
-
     reset() {
         this.state = "idle";
         this.anchor = false;
         this.transition = false;
         this.controller = false;
-        return "⟲ P01 zurückgesetzt";
+        return "⟲ ANKER zurückgesetzt";
     }
 };
 
-window.P01 = P01;
-export default P01;
+window.ANKER = ANKER;
+export default ANKER;
