@@ -1,21 +1,15 @@
 // ============================================================
-// NChoch3 · NC.respo · Etage 3 · Schnell-Responder
+// NChoch3 · NC.respo · Etage 3 · Schnell-Responder (NEU)
 // ============================================================
 
-export const NChoch3 = {
+export const NChoch3 = (info = {}) => {
 
-    NC: "NC_HOCH_3",
-
-    farbe: "türkis",
-
-    respo(info = {}) {
-        return {
-            NC: this.NC,
-            etage: 3,
-            farbe: this.farbe,
-            impuls: "schnell",
-            info,
-            zeit: new Date().toISOString()
-        };
-    }
+    return {
+        NC: "NC_HOCH_3",
+        etage: 3,
+        farbe: "türkis",
+        impuls: "schnell",
+        info,
+        zeit: new Date().toISOString()
+    };
 };
