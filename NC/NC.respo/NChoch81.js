@@ -1,21 +1,15 @@
 // ============================================================
-// NChoch81 · NC.respo · Etage 81 · Tiefen-Responder
+// NChoch81 · NC.respo · Etage 81 · Tiefen-Responder (NEU)
 // ============================================================
 
-export const NChoch81 = {
+export const NChoch81 = (info = {}) => {
 
-    NC: "NC_HOCH_81",
-
-    farbe: "blau",
-
-    respo(info = {}) {
-        return {
-            NC: this.NC,
-            etage: 81,
-            farbe: this.farbe,
-            impuls: "tief",
-            info,
-            zeit: new Date().toISOString()
-        };
-    }
+    return {
+        NC: "NC_HOCH_81",
+        etage: 81,
+        farbe: "blau",
+        impuls: "tief",
+        info,
+        zeit: new Date().toISOString()
+    };
 };
