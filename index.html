@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌈 WELCOME · SHOW.live · Alle Module · Barrierefrei</title>
+  <title>🌉 BRIDGE · WELCOME · SHOW.live · Alle Module · Connect</title>
 
   <style>
     /* ─── BARRIEREFREIHEIT ─────────────────────────────────── */
@@ -32,7 +32,6 @@
       line-height: 1.6;
     }
 
-    /* ─── HOCHKONTRAST & GROSSSCHRIFT ────────────────────── */
     .container { max-width: 1400px; margin: 0 auto; }
 
     header {
@@ -50,6 +49,40 @@
       font-size: 1.4rem;
       color: #aaa;
       margin-top: 8px;
+    }
+
+    /* ─── STATUS-BAR ─────────────────────────────────────────── */
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      justify-content: center;
+      background: #111;
+      border-radius: 16px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      border: 2px solid #2a2a3a;
+      font-size: 1.1rem;
+    }
+    .status-bar .item { display: flex; align-items: center; gap: 8px; }
+    .status-bar .dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot.green { background: var(--green); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.red { background: var(--red); }
+    .dot.blue { background: var(--blue); }
+    .dot.pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    .status-bar .mode-tag {
+      background: rgba(255,215,0,0.1);
+      padding: 4px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,215,0,0.2);
+      color: var(--gold);
+      font-size: 0.9rem;
     }
 
     /* ─── MODUL-GRID ───────────────────────────────────────── */
@@ -84,22 +117,19 @@
       outline: 3px solid var(--gold);
       outline-offset: 2px;
     }
-    .module-card .icon {
-      font-size: 3.2rem;
-      display: block;
-      margin-bottom: 10px;
-    }
-    .module-card .name {
-      font-size: 1.3rem;
-      font-weight: bold;
-    }
-    .module-card .desc {
-      font-size: 0.9rem;
-      color: #888;
-      margin-top: 4px;
+    .module-card .icon { font-size: 3.2rem; display: block; margin-bottom: 10px; }
+    .module-card .name { font-size: 1.3rem; font-weight: bold; }
+    .module-card .desc { font-size: 0.9rem; color: #888; margin-top: 4px; }
+    .module-card .status-badge {
+      font-size: 0.7rem;
+      margin-top: 8px;
+      padding: 2px 12px;
+      border-radius: 12px;
+      background: rgba(0,255,136,0.1);
+      color: var(--green);
+      border: 1px solid rgba(0,255,136,0.2);
     }
 
-    /* ─── FARBIGE KANTEN ───────────────────────────────────── */
     .card-frieden { border-color: var(--gold); }
     .card-ort { border-color: var(--green); }
     .card-evomind { border-color: var(--pink); }
@@ -110,36 +140,38 @@
     .card-noah { border-color: var(--gold); }
     .card-welcome { border-color: var(--red); }
 
-    /* ─── SCHNELL-STATUS ────────────────────────────────────── */
-    .status-bar {
+    /* ─── CONTROLS ──────────────────────────────────────────── */
+    .controls-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px 24px;
-      justify-content: center;
-      background: #111;
-      border-radius: 16px;
-      padding: 16px 24px;
-      margin-bottom: 24px;
-      border: 2px solid #2a2a3a;
-      font-size: 1.1rem;
-    }
-    .status-bar .item {
-      display: flex;
-      align-items: center;
       gap: 8px;
+      justify-content: center;
+      margin: 12px 0;
     }
-    .status-bar .dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      display: inline-block;
+    .controls-row button {
+      background: #1a1a2a;
+      border: 2px solid #333;
+      border-radius: 30px;
+      padding: 10px 24px;
+      font-size: 1rem;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: inherit;
     }
-    .dot.green { background: var(--green); }
-    .dot.yellow { background: var(--yellow); }
-    .dot.red { background: var(--red); }
-    .dot.blue { background: var(--blue); }
-    .dot.pulse { animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    .controls-row button:hover,
+    .controls-row button:focus-visible {
+      border-color: var(--gold);
+      background: #222;
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+    .controls-row button.primary { border-color: var(--gold); color: var(--gold); }
+    .controls-row button.primary:hover { background: var(--gold); color: #000; }
+    .controls-row button.connect { border-color: var(--green); color: var(--green); }
+    .controls-row button.connect:hover { background: var(--green); color: #000; }
+    .controls-row button.danger { border-color: var(--red); color: var(--red); }
+    .controls-row button.danger:hover { background: var(--red); color: #000; }
 
     /* ─── HILFE / NAVIGATION ────────────────────────────────── */
     .help-row {
@@ -184,8 +216,11 @@
     }
     #log .entry { padding: 3px 0; border-bottom: 1px solid #0a0a12; }
     #log .time { color: #444; margin-right: 12px; }
+    #log .hl { color: var(--gold); }
+    #log .ok { color: var(--green); }
+    #log .connect { color: var(--cyan); }
+    #log .warn { color: var(--yellow); }
 
-    /* ─── FOOTER ────────────────────────────────────────────── */
     footer {
       text-align: center;
       padding: 24px 0 10px;
@@ -195,18 +230,6 @@
       margin-top: 30px;
     }
     footer span { color: var(--gold); }
-
-    /* ─── SCREENREADER-ONLY ─────────────────────────────────── */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      border: 0;
-    }
 
     /* ─── RESPONSIVE ─────────────────────────────────────────── */
     @media (max-width: 600px) {
@@ -228,8 +251,8 @@
 
   <!-- ─── HEADER ─────────────────────────────────────────────── -->
   <header>
-    <h1>🌈 WELCOME · SHOW.live</h1>
-    <p>Alle Module · Barrierefrei · Selbstbestimmt · <span style="color:var(--gold);">wieimmer4u</span></p>
+    <h1>🌉 BRIDGE · WELCOME</h1>
+    <p>Alle Module verbunden · Barrierefrei · <span style="color:var(--gold);">wieimmer4u</span></p>
     <div style="font-size:1.2rem;color:#aaa;margin-top:6px;">
       <span id="clock">⏱️ --:--:--</span>
     </div>
@@ -242,65 +265,87 @@
     <span class="item"><span class="dot red"></span> Rot – Hilfe</span>
     <span class="item"><span class="dot blue"></span> Blau – Flow</span>
     <span class="item"><span class="dot pulse" style="background:var(--gold);"></span> CONNECT aktiv</span>
+    <span class="item mode-tag" id="modeDisplay">🌀 NE</span>
   </div>
 
   <!-- ─── MODUL-GRID ─────────────────────────────────────────── -->
   <div class="module-grid" role="navigation" aria-label="Alle Module von SHOW.live">
 
-    <a href="./index.html" class="module-card card-frieden">
+    <a href="./index.html" class="module-card card-frieden" data-mod="FRIEDEN">
       <span class="icon">🕊️</span>
       <span class="name">FRIEDENS-INDEX</span>
       <span class="desc">Main · RING · DOCH · 3×3</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./ort/index.html" class="module-card card-ort">
+    <a href="./ort/index.html" class="module-card card-ort" data-mod="ORT">
       <span class="icon">🧠</span>
       <span class="name">ORTE-EVO</span>
       <span class="desc">Arbeitsplatz · Editierraum · Formraum</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./evomind/index.html" class="module-card card-evomind">
+    <a href="./evomind/index.html" class="module-card card-evomind" data-mod="EVOMIND">
       <span class="icon">🧬</span>
       <span class="name">evoMIND</span>
       <span class="desc">Dimension · Flow · CUBE_MIND</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./earn/index.html" class="module-card card-earn">
+    <a href="./earn/index.html" class="module-card card-earn" data-mod="EARN">
       <span class="icon">⚡</span>
       <span class="name">VECTOR SYSTEM</span>
       <span class="desc">EARN · QI · IQQ · 6 Vektoren</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./autoboot/index.html" class="module-card card-autoboot">
+    <a href="./autoboot/index.html" class="module-card card-autoboot" data-mod="AUTOBOOT">
       <span class="icon">⏻</span>
       <span class="name">MXU · BOOT</span>
       <span class="desc">Advanced · Explorer · 10 Module</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./agent/index.html" class="module-card card-agent">
+    <a href="./agent/index.html" class="module-card card-agent" data-mod="AGENT">
       <span class="icon">🧠</span>
       <span class="name">WRAIGHT · AGENT</span>
       <span class="desc">Coach · Soccer · Aura · Sense</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./OS/index.html" class="module-card card-os">
+    <a href="./OS/index.html" class="module-card card-os" data-mod="OS">
       <span class="icon">⚡</span>
       <span class="name">MXU · OS</span>
       <span class="desc">Station 6.0 · Achsen · Sync · Meta</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./NOAH/index.html" class="module-card card-noah">
+    <a href="./NOAH/index.html" class="module-card card-noah" data-mod="NOAH">
       <span class="icon">🌊</span>
       <span class="name">NOAH · Kaiser</span>
       <span class="desc">Continuum · 3⁹×81 · Level 14</span>
+      <span class="status-badge">● online</span>
     </a>
 
-    <a href="./welcome/WELCOME.html" class="module-card card-welcome">
+    <a href="./welcome/WELCOME.html" class="module-card card-welcome" data-mod="WELCOME">
       <span class="icon">🌈</span>
       <span class="name">WELCOME</span>
       <span class="desc">Selbstbestimmt · Farben · Flow</span>
+      <span class="status-badge">● online</span>
     </a>
 
+  </div>
+
+  <!-- ─── CONTROLS ───────────────────────────────────────────── -->
+  <div class="controls-row">
+    <button class="primary" onclick="setBridgeMode('DA')">🔵 DA</button>
+    <button class="primary" onclick="setBridgeMode('NE')">⚪ NE</button>
+    <button class="primary" onclick="setBridgeMode('BEN')">🟡 BEN</button>
+    <button class="primary" onclick="setBridgeMode('DOCH')">🔴 DOCH</button>
+    <button class="primary" onclick="setBridgeMode('NEIN')">⛔ NEIN</button>
+    <button class="primary" onclick="setBridgeMode('SCHWEBE')">🌀 SCHWEBE</button>
+    <button class="connect" onclick="connectAllBridge()">🔗 CONNECT ALL</button>
+    <button class="danger" onclick="resetBridge()">⟲ RESET</button>
   </div>
 
   <!-- ─── HILFE / NAVIGATION ────────────────────────────────── -->
@@ -318,75 +363,182 @@
 
   <!-- ─── LOG ────────────────────────────────────────────────── -->
   <div id="log" role="log" aria-label="Aktivitätenprotokoll">
-    <div class="entry"><span class="time">[WELCOME]</span> 🌈 SHOW.live · Alle Module · Barrierefrei · Selbstbestimmt</div>
-    <div class="entry"><span class="time">[WELCOME]</span> ✅ 9 Module geladen · Klicke auf eine Kachel, um zu starten</div>
+    <div class="entry"><span class="time">[BRIDGE]</span> <span class="hl">🌉 BRIDGE · WELCOME · Alle Module verbunden</span></div>
+    <div class="entry"><span class="time">[BRIDGE]</span> <span class="ok">✅ 9 Module geladen · CONNECT aktiv</span></div>
   </div>
 
   <footer>
-    <span>♟️</span> WELCOME · SHOW.live · Inklusiv · Für alle Menschen · <span>iki1uc wieimmer4u</span>
+    <span>🌉</span> BRIDGE · WELCOME · SHOW.live · Inklusiv · <span>iki1uc wieimmer4u</span>
   </footer>
 
 </div>
 
+<!-- ─── GLOBAL BRIDGE STATE ─────────────────────────────────── -->
 <script>
-// ─── UHR ──────────────────────────────────────────────────────
-function updateClock() {
-  document.getElementById('clock').textContent = '⏱️ ' + new Date().toLocaleTimeString();
-}
-setInterval(updateClock, 1000);
-updateClock();
+  // ============================================================
+  // BRIDGE – Verbindungs-Engine für SHOW.live
+  // ============================================================
 
-// ─── LOG ──────────────────────────────────────────────────────
-function log(msg) {
-  const logDiv = document.getElementById('log');
-  const entry = document.createElement('div');
-  entry.className = 'entry';
-  const time = new Date().toLocaleTimeString();
-  entry.innerHTML = `<span class="time">[${time}]</span> ${msg}`;
-  logDiv.appendChild(entry);
-  logDiv.scrollTop = logDiv.scrollHeight;
-  while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
-}
-
-// ─── HILFE ────────────────────────────────────────────────────
-function showHelp(topic) {
-  const output = document.getElementById('helpOutput');
-  const msgs = {
-    orientierung: `
-      <span style="color:var(--yellow);font-size:1.4rem;">🧭 Orientierung</span><br>
-      Du bist hier richtig. Wähle ein Modul aus der Kachelansicht.<br>
-      Bei Unsicherheit klicke auf <strong>Gelb</strong> in der Status-Leiste oder auf <strong>WELCOME</strong>.
-    `,
-    gesprach: `
-      <span style="color:var(--blue);font-size:1.4rem;">💬 Gespräch · Austausch</span><br>
-      Du kannst jederzeit mit einem Betreuer sprechen.<br>
-      Klicke auf <strong>WELCOME</strong> für den Farb-Status oder auf <strong>Agent</strong> für den Coach.
-    `,
-    notfall: `
-      <span style="color:var(--red);font-size:1.4rem;">🆘 Notfall · Soforthilfe</span><br>
-      <strong style="color:var(--red);">WICHTIG:</strong> Bei akuter Notlage wähle <strong>Rot</strong> in WELCOME.<br>
-      Ein Betreuerwechsel wird sofort eingeleitet – ohne Diskussion, ohne Erklärung.<br>
-      Du musst nichts weiter tun.
-    `
+  // ─── STATE ──────────────────────────────────────────────────
+  const BRIDGE = {
+    mode: 'NE',
+    connected: false,
+    modules: {
+      FRIEDEN: { active: true, online: true },
+      ORT: { active: true, online: true },
+      EVOMIND: { active: true, online: true },
+      EARN: { active: true, online: true },
+      AUTOBOOT: { active: true, online: true },
+      AGENT: { active: true, online: true },
+      OS: { active: true, online: true },
+      NOAH: { active: true, online: true },
+      WELCOME: { active: true, online: true }
+    },
+    matrix: {
+      DA:  { doo: true, door: true, doch: true },
+      NE:  { doo: false, door: false, doch: true },
+      BEN: { doo: true, door: false, doch: true },
+      DOCH:{ doo: false, door: false, doch: true },
+      NEIN:{ doo: false, door: false, doch: false },
+      SCHWEBE:{ doo: true, door: true, doch: true }
+    }
   };
-  output.innerHTML = msgs[topic] || '❓ Thema nicht gefunden. Wähle ein Modul aus der Kachelansicht.';
-  log(`🧭 Hilfe aufgerufen: ${topic}`);
-}
 
-// ─── TASTATUR-NAVIGATION ─────────────────────────────────────
-document.addEventListener('keydown', (e) => {
-  if (e.key === '1') window.location.href = './index.html';
-  if (e.key === '2') window.location.href = './ort/index.html';
-  if (e.key === '3') window.location.href = './evomind/index.html';
-  if (e.key === '4') window.location.href = './earn/index.html';
-  if (e.key === '5') window.location.href = './autoboot/index.html';
-  if (e.key === '6') window.location.href = './agent/index.html';
-  if (e.key === '7') window.location.href = './OS/index.html';
-  if (e.key === '8') window.location.href = './NOAH/index.html';
-  if (e.key === '9') window.location.href = './welcome/WELCOME.html';
-  if (e.key === 'h' || e.key === 'H') showHelp('orientierung');
-  if (e.key === 'n' || e.key === 'N') showHelp('notfall');
-});
+  window.BRIDGE = BRIDGE;
+
+  // ─── DOM ────────────────────────────────────────────────────
+  const modeDisplay = document.getElementById('modeDisplay');
+  const logDiv = document.getElementById('log');
+
+  // ─── LOG ────────────────────────────────────────────────────
+  function log(msg, type = 'hl') {
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    const time = new Date().toLocaleTimeString();
+    const cls = ['hl','ok','connect','warn'].includes(type) ? type : 'hl';
+    entry.innerHTML = `<span class="time">[${time}]</span> <span class="${cls}">${msg}</span>`;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+    while (logDiv.children.length > 40) logDiv.removeChild(logDiv.firstChild);
+  }
+
+  // ─── SET BRIDGE MODE ──────────────────────────────────────
+  function setBridgeMode(mode) {
+    if (!BRIDGE.matrix[mode]) {
+      log(`❌ Unbekannter Modus: ${mode}`, 'warn');
+      return;
+    }
+
+    BRIDGE.mode = mode;
+    modeDisplay.textContent = `🌀 ${mode}`;
+
+    const m = BRIDGE.matrix[mode];
+    BRIDGE.connected = m.doo || m.door || m.doch;
+
+    // Module-Status aktualisieren
+    Object.keys(BRIDGE.modules).forEach(key => {
+      BRIDGE.modules[key].active = BRIDGE.connected;
+    });
+
+    log(`🌀 MODUS: ${mode} · DOO:${m.doo?'✅':'⛔'} DOOR:${m.door?'✅':'⛔'} DOCH:${m.doch?'✅':'⛔'}`, 'hl');
+    updateUI();
+  }
+
+  // ─── CONNECT ALL ──────────────────────────────────────────
+  function connectAllBridge() {
+    BRIDGE.connected = true;
+    Object.keys(BRIDGE.modules).forEach(key => {
+      BRIDGE.modules[key].active = true;
+      BRIDGE.modules[key].online = true;
+    });
+    setBridgeMode('DA');
+    log('🔗 CONNECT ALL · Alle Module verbunden', 'connect');
+  }
+
+  // ─── RESET ────────────────────────────────────────────────
+  function resetBridge() {
+    BRIDGE.mode = 'NE';
+    BRIDGE.connected = false;
+    Object.keys(BRIDGE.modules).forEach(key => {
+      BRIDGE.modules[key].active = false;
+      BRIDGE.modules[key].online = true;
+    });
+    modeDisplay.textContent = '🌀 NE';
+    log('⟲ RESET · Bridge zurückgesetzt', 'warn');
+    updateUI();
+  }
+
+  // ─── UPDATE UI ─────────────────────────────────────────────
+  function updateUI() {
+    document.querySelectorAll('.module-card').forEach(card => {
+      const mod = card.dataset.mod;
+      if (mod && BRIDGE.modules[mod]) {
+        const badge = card.querySelector('.status-badge');
+        if (badge) {
+          const isActive = BRIDGE.modules[mod].active;
+          badge.textContent = isActive ? '● online' : '○ offline';
+          badge.style.color = isActive ? 'var(--green)' : 'var(--red)';
+        }
+      }
+    });
+  }
+
+  // ─── HILFE ──────────────────────────────────────────────────
+  function showHelp(topic) {
+    const output = document.getElementById('helpOutput');
+    const msgs = {
+      orientierung: `
+        <span style="color:var(--yellow);font-size:1.4rem;">🧭 Orientierung</span><br>
+        Du bist hier richtig. Wähle ein Modul aus der Kachelansicht.<br>
+        Bei Unsicherheit klicke auf <strong>Gelb</strong> in der Status-Leiste.
+      `,
+      gesprach: `
+        <span style="color:var(--blue);font-size:1.4rem;">💬 Gespräch · Austausch</span><br>
+        Du kannst jederzeit mit einem Betreuer sprechen.<br>
+        Klicke auf <strong>WELCOME</strong> für den Farb-Status oder auf <strong>Agent</strong> für den Coach.
+      `,
+      notfall: `
+        <span style="color:var(--red);font-size:1.4rem;">🆘 Notfall · Soforthilfe</span><br>
+        <strong style="color:var(--red);">WICHTIG:</strong> Bei akuter Notlage wähle <strong>Rot</strong> in WELCOME.<br>
+        Ein Betreuerwechsel wird sofort eingeleitet – ohne Diskussion, ohne Erklärung.
+      `
+    };
+    output.innerHTML = msgs[topic] || '❓ Thema nicht gefunden. Wähle ein Modul aus der Kachelansicht.';
+    log(`🧭 Hilfe aufgerufen: ${topic}`, 'hl');
+  }
+
+  // ─── UHR ──────────────────────────────────────────────────────
+  function updateClock() {
+    document.getElementById('clock').textContent = '⏱️ ' + new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ─── TASTATUR ─────────────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '1') setBridgeMode('DA');
+    if (e.key === '2') setBridgeMode('NE');
+    if (e.key === '3') setBridgeMode('BEN');
+    if (e.key === '4') setBridgeMode('DOCH');
+    if (e.key === '5') setBridgeMode('NEIN');
+    if (e.key === '6') setBridgeMode('SCHWEBE');
+    if (e.key === 'c' || e.key === 'C') connectAllBridge();
+    if (e.key === 'x' || e.key === 'X') resetBridge();
+    if (e.key === 'h' || e.key === 'H') showHelp('orientierung');
+    if (e.key === 'n' || e.key === 'N') showHelp('notfall');
+    if (e.key === ' ') { e.preventDefault(); setBridgeMode('SCHWEBE'); }
+  });
+
+  // ─── INIT ──────────────────────────────────────────────────
+  setBridgeMode('NE');
+  log('⌨️  1=DA 2=NE 3=BEN 4=DOCH 5=NEIN 6=SCHWEBE  c=CONNECT  x=RESET  h=Hilfe  n=Notfall', 'hl');
+  log('🌉 BRIDGE · WELCOME · Bereit', 'ok');
+
+  // Globale Funktionen für onclick
+  window.setBridgeMode = setBridgeMode;
+  window.connectAllBridge = connectAllBridge;
+  window.resetBridge = resetBridge;
+  window.showHelp = showHelp;
 </script>
 
 </body>
